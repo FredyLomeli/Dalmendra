@@ -21,6 +21,7 @@ namespace Dalmendra
         // 0 sin estado
         // 1 nuevo
         // 2 edición
+        // 3 Ordenando
         string status = "0";
 
         private void frmCategorias_Load(object sender, EventArgs e)
@@ -88,37 +89,85 @@ namespace Dalmendra
 
         private void frmCategorias_FormClosed(object sender, FormClosedEventArgs e)
         {
+            cModul.mCategorias = nCategoria.consulta();
             cModul.banActualizacion = true;
         }
 
-        private void dgvCategorias_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvCategorias_SelectionChanged(object sender, EventArgs e)
         {
-            if (status == "0" && dgvCategorias.RowCount > 0)
+            try
             {
-                // Asigna valor a los campos
-                lblID.Text = dgvCategorias.Rows[dgvCategorias.SelectedRows[0].Index].Cells[0].Value.ToString();
-                txtDescripcion.Text = dgvCategorias.Rows[dgvCategorias.SelectedRows[0].Index].Cells[1].Value.ToString();
-                txtPalabraClave.Text = dgvCategorias.Rows[dgvCategorias.SelectedRows[0].Index].Cells[2].Value.ToString();
-                ckbEstado.Checked = cDatos.convertirActivoToBool(dgvCategorias.Rows[dgvCategorias.SelectedRows[0].Index].Cells[3].Value.ToString());
-                tsbEditar.Enabled = true;
-                tsbdelete.Enabled = true;
-                tsbCancelar.Enabled = true;
-                // Cargamos los datos al modelos en uso
-                nCategoria.up(txtDescripcion.Text, txtPalabraClave.Text, cDatos.convertirBoolToInt(ckbEstado.Checked).ToString(), lblID.Text);
+                if (status == "0" && dgvCategorias.RowCount > 0)
+                {
+                    // Asigna valor a los campos
+                    lblID.Text = dgvCategorias.Rows[dgvCategorias.SelectedRows[0].Index].Cells[0].Value.ToString();
+                    txtDescripcion.Text = dgvCategorias.Rows[dgvCategorias.SelectedRows[0].Index].Cells[1].Value.ToString();
+                    txtPalabraClave.Text = dgvCategorias.Rows[dgvCategorias.SelectedRows[0].Index].Cells[2].Value.ToString();
+                    ckbEstado.Checked = cDatos.convertirActivoToBool(dgvCategorias.Rows[dgvCategorias.SelectedRows[0].Index].Cells[3].Value.ToString());
+                    tsbEditar.Enabled = true;
+                    tsbdelete.Enabled = true;
+                    tsbCancelar.Enabled = true;
+                    // Cargamos los datos al modelos en uso
+                    nCategoria.up(txtDescripcion.Text, txtPalabraClave.Text, cDatos.convertirBoolToInt(ckbEstado.Checked).ToString(), lblID.Text);
+                }
+                else if (status == "3")
+                {
+                    validaFuncionesOrden();
+                }
+            }
+            catch (Exception exe)
+            {
+            }
+        }
+
+        private void validaFuncionesOrden()
+        {
+            // Valida el registro seleccionado sea el primero
+            if (dgvCategorias.SelectedRows[0].Index == 0)
+            {
+                this.tsbInicio.Enabled = false;
+                this.tsbSubir.Enabled = false;
+            }
+            else
+            {
+                this.tsbInicio.Enabled = true;
+                this.tsbSubir.Enabled = true;
+            }
+            // Valida el registro seleccionado sea el ultimo
+            if (dgvCategorias.SelectedRows[0].Index == cModul.mCateoriasListado.Rows.Count - 1)
+            {
+                this.tsbFinal.Enabled = false;
+                this.tsbBajar.Enabled = false;
+            }
+            else
+            {
+                this.tsbFinal.Enabled = true;
+                this.tsbBajar.Enabled = true;
             }
         }
 
         // Carga los valores que se tienen en la base de datos y se  muestran en la grilla
-        private void ConsultarCategorias()
+        private void ConsultarCategorias(bool ban = true)
         {
-            DataTable dt = cModul.mCateoriasListado;
+            cModul.mCateoriasListado.DefaultView.Sort = "orden ASC";
+            cModul.mCateoriasListado = cModul.mCateoriasListado.DefaultView.ToTable();
+            DataTable dt = cModul.mCateoriasListado.Copy();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 dt.Rows[i]["Estado"] = cDatos.convertirIntToActivo(dt.Rows[i]["Estado"].ToString());
             }
+            dt.Columns.Remove("orden");
             dgvCategorias.DataSource = dt;
+            //Evita que se pueda ordenar las columnas
+            for (int i = 0; i < dgvCategorias.Columns.Count; i++)
+            {
+                dgvCategorias.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
             dgvCategorias.AutoResizeColumns();
             dgvCategorias.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            // Consulta las sucursales registradas
+            if (ban)
+                cModul.mCategorias = nCategoria.consulta();
         }
 
         private void GuardarSucursal()
@@ -160,6 +209,11 @@ namespace Dalmendra
             tsbGuardar.Enabled = false;
             tsbdelete.Enabled = false;
             tsbCancelar.Enabled = false;
+            tsbInicio.Enabled = false;
+            tsbFinal.Enabled = false;
+            tsbSubir.Enabled = false;
+            tsbBajar.Enabled = false;
+            tsbOrdenar.Enabled = true;
         }
 
         private void limpiarCampos()
@@ -195,6 +249,120 @@ namespace Dalmendra
             }
             nCategoria.up(descripcion, palabra_clave, estado, id);
             return true;
+        }
+
+        private void tsbOrdenar_Click(object sender, EventArgs e)
+        {
+            if (dgvCategorias.Rows.Count > 1)
+            {
+                inhabilitarCampos();
+                limpiarCampos();
+                this.tsbBajar.Enabled = true;
+                this.tsbInicio.Enabled = true;
+                this.tsbSubir.Enabled = true;
+                this.tsbFinal.Enabled = true;
+                this.tsbOrdenar.Enabled = false;
+                this.tsbNuevo.Enabled = false;
+                this.tsbCancelar.Enabled = true;
+                //this.tsbGuardar.Enabled = true;
+                this.status = "3";
+                validaFuncionesOrden();
+            }
+            else
+                MessageBox.Show(cModul.OrdenDebeSerMayorQueUno, cModul.NombreDelPrograma, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void tsbInicio_Click(object sender, EventArgs e)
+        {
+            // Intercambia el orden de los valores seleccionados.
+            int indexSeleccted = dgvCategorias.SelectedRows[0].Index;
+            // Variable que controla el orden de los valores
+            int newOrden = 2;
+            // Recorreo el listado para signar el orden.
+            for (int i = 0; i < cModul.mCateoriasListado.Rows.Count; i++)
+            {
+                // Si es el indice seleccionado lo marca como primero en la lista
+                if (i == indexSeleccted)
+                {
+                    cModul.mCateoriasListado.Rows[i]["orden"] = 1;
+                    nCategoria.updateOrden(cModul.mCateoriasListado.Rows[i]["ID"].ToString(), 1);
+                }
+                // Si no es el indice seleccionado lo marca como un consecutivo
+                else
+                {
+                    cModul.mCateoriasListado.Rows[i]["orden"] = newOrden;
+                    nCategoria.updateOrden(cModul.mCateoriasListado.Rows[i]["ID"].ToString(), newOrden);
+                    newOrden++;
+                }
+            }
+            // Actualiza la tabla offline   
+            ConsultarCategorias(false);
+            dgvCategorias.Rows[0].Selected = true;
+        }
+
+        private void tsbSubir_Click(object sender, EventArgs e)
+        {
+            // Intercambia el orden de los valores seleccionados.
+            int indexSeleccted = dgvCategorias.SelectedRows[0].Index;
+            int ordenDesplazado = Int32.Parse(cModul.mCateoriasListado.Rows[indexSeleccted - 1]["orden"].ToString());
+            string idOrdenDesplazado = cModul.mCateoriasListado.Rows[indexSeleccted - 1]["ID"].ToString();
+            int ordenMover = Int32.Parse(cModul.mCateoriasListado.Rows[indexSeleccted]["orden"].ToString());
+            string idOrdenMover = cModul.mCateoriasListado.Rows[indexSeleccted]["ID"].ToString();
+            cModul.mCateoriasListado.Rows[dgvCategorias.SelectedRows[0].Index - 1]["orden"] = ordenMover;
+            cModul.mCateoriasListado.Rows[dgvCategorias.SelectedRows[0].Index]["orden"] = ordenDesplazado;
+            // Actualiza los datos en la DB
+            nCategoria.updateOrden(idOrdenDesplazado, ordenMover);
+            nCategoria.updateOrden(idOrdenMover, ordenDesplazado);
+            // Actualiza la tabla offline   
+            ConsultarCategorias(false);
+            dgvCategorias.Rows[indexSeleccted - 1].Selected = true;
+        }
+
+        private void tsbBajar_Click(object sender, EventArgs e)
+        {
+            // Intercambia el orden de los valores seleccionados.
+            int indexSeleccted = dgvCategorias.SelectedRows[0].Index;
+            int ordenDesplazado = Int32.Parse(cModul.mCateoriasListado.Rows[indexSeleccted + 1]["orden"].ToString());
+            string idOrdenDesplazado = cModul.mCateoriasListado.Rows[indexSeleccted + 1]["ID"].ToString();
+            int ordenMover = Int32.Parse(cModul.mCateoriasListado.Rows[indexSeleccted]["orden"].ToString());
+            string idOrdenMover = cModul.mCateoriasListado.Rows[indexSeleccted]["ID"].ToString();
+            cModul.mCateoriasListado.Rows[dgvCategorias.SelectedRows[0].Index + 1]["orden"] = ordenMover;
+            cModul.mCateoriasListado.Rows[dgvCategorias.SelectedRows[0].Index]["orden"] = ordenDesplazado;
+            // Actualiza los datos en la DB
+            nCategoria.updateOrden(idOrdenDesplazado, ordenMover);
+            nCategoria.updateOrden(idOrdenMover, ordenDesplazado);
+            // Actualiza la tabla offline   
+            ConsultarCategorias(false);
+            dgvCategorias.Rows[indexSeleccted + 1].Selected = true;
+        }
+
+        private void tsbFinal_Click(object sender, EventArgs e)
+        {
+            // Intercambia el orden de los valores seleccionados.
+            int indexSeleccted = dgvCategorias.SelectedRows[0].Index;
+            // Variable que controla el orden de los valores
+            int newOrden = 1;
+            // Recorreo el listado para signar el orden.
+            for (int i = 0; i < cModul.mCateoriasListado.Rows.Count; i++)
+            {
+                // Si es el indice seleccionado lo marca como primero en la lista
+                if (i == indexSeleccted)
+                {
+                    cModul.mCateoriasListado.Rows[i]["orden"] = cModul.mCateoriasListado.Rows.Count;
+                    nCategoria.updateOrden(cModul.mCateoriasListado.Rows[i]["ID"].ToString(),
+                        cModul.mCateoriasListado.Rows.Count);
+                }
+                // Si no es el indice seleccionado lo marca como un consecutivo
+                else
+                {
+                    cModul.mCateoriasListado.Rows[i]["orden"] = newOrden;
+                    nCategoria.updateOrden(cModul.mCateoriasListado.Rows[i]["ID"].ToString(), newOrden);
+                    newOrden++;
+                }
+            }
+            // Actualiza la tabla offline   
+            ConsultarCategorias(false);
+            dgvCategorias.Rows[cModul.mCateoriasListado.Rows.Count - 1].Selected = true;
         }
     }
 }

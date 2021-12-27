@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSucursales));
             this.dgvSucursales = new System.Windows.Forms.DataGridView();
             this.lblNombreSucursal = new System.Windows.Forms.Label();
             this.txtNombreSucursal = new System.Windows.Forms.TextBox();
@@ -40,6 +41,12 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbTest = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbOrdenar = new System.Windows.Forms.ToolStripButton();
+            this.tsbInicio = new System.Windows.Forms.ToolStripButton();
+            this.tsbSubir = new System.Windows.Forms.ToolStripButton();
+            this.tsbBajar = new System.Windows.Forms.ToolStripButton();
+            this.tsbFinal = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCerrar = new System.Windows.Forms.ToolStripButton();
             this.gpbSucursales = new System.Windows.Forms.GroupBox();
             this.lblID = new System.Windows.Forms.Label();
@@ -59,6 +66,7 @@
             // 
             // dgvSucursales
             // 
+            this.dgvSucursales.AllowDrop = true;
             this.dgvSucursales.AllowUserToAddRows = false;
             this.dgvSucursales.AllowUserToDeleteRows = false;
             this.dgvSucursales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -70,6 +78,7 @@
             this.dgvSucursales.Size = new System.Drawing.Size(471, 242);
             this.dgvSucursales.TabIndex = 0;
             this.dgvSucursales.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSucursales_CellClick);
+            this.dgvSucursales.SelectionChanged += new System.EventHandler(this.dgvSucursales_SelectionChanged);
             // 
             // lblNombreSucursal
             // 
@@ -99,10 +108,16 @@
             this.toolStripSeparator1,
             this.tsbTest,
             this.toolStripSeparator2,
+            this.tsbOrdenar,
+            this.tsbInicio,
+            this.tsbSubir,
+            this.tsbBajar,
+            this.tsbFinal,
+            this.toolStripSeparator3,
             this.tsbCerrar});
             this.tspSucursales.Location = new System.Drawing.Point(0, 0);
             this.tspSucursales.Name = "tspSucursales";
-            this.tspSucursales.Size = new System.Drawing.Size(662, 25);
+            this.tspSucursales.Size = new System.Drawing.Size(666, 25);
             this.tspSucursales.TabIndex = 3;
             this.tspSucursales.Text = "toolStrip1";
             // 
@@ -169,7 +184,7 @@
             // 
             this.tsbTest.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbTest.Enabled = false;
-            this.tsbTest.Image = global::Dalmendra.Properties.Resources.database_system___1800_;
+            this.tsbTest.Image = global::Dalmendra.Properties.Resources.charger___696_;
             this.tsbTest.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbTest.Name = "tsbTest";
             this.tsbTest.Size = new System.Drawing.Size(23, 22);
@@ -180,6 +195,65 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbOrdenar
+            // 
+            this.tsbOrdenar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbOrdenar.Image = global::Dalmendra.Properties.Resources.database_system___1800_;
+            this.tsbOrdenar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbOrdenar.Name = "tsbOrdenar";
+            this.tsbOrdenar.Size = new System.Drawing.Size(23, 22);
+            this.tsbOrdenar.Text = "Ordenar";
+            this.tsbOrdenar.Click += new System.EventHandler(this.tsbOrdenar_Click);
+            // 
+            // tsbInicio
+            // 
+            this.tsbInicio.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbInicio.Enabled = false;
+            this.tsbInicio.Image = global::Dalmendra.Properties.Resources.arrow_up_up__272_;
+            this.tsbInicio.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbInicio.Name = "tsbInicio";
+            this.tsbInicio.Size = new System.Drawing.Size(23, 22);
+            this.tsbInicio.Text = "Enviar al inicio";
+            this.tsbInicio.Click += new System.EventHandler(this.tsbInicio_Click);
+            // 
+            // tsbSubir
+            // 
+            this.tsbSubir.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSubir.Enabled = false;
+            this.tsbSubir.Image = global::Dalmendra.Properties.Resources.arrow_up___267_;
+            this.tsbSubir.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSubir.Name = "tsbSubir";
+            this.tsbSubir.Size = new System.Drawing.Size(23, 22);
+            this.tsbSubir.Text = "Subir";
+            this.tsbSubir.Click += new System.EventHandler(this.tsbSubir_Click);
+            // 
+            // tsbBajar
+            // 
+            this.tsbBajar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbBajar.Enabled = false;
+            this.tsbBajar.Image = global::Dalmendra.Properties.Resources.arrow_down___269_;
+            this.tsbBajar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbBajar.Name = "tsbBajar";
+            this.tsbBajar.Size = new System.Drawing.Size(23, 22);
+            this.tsbBajar.Text = "Bajar";
+            this.tsbBajar.Click += new System.EventHandler(this.tsbBajar_Click);
+            // 
+            // tsbFinal
+            // 
+            this.tsbFinal.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbFinal.Enabled = false;
+            this.tsbFinal.Image = global::Dalmendra.Properties.Resources.arrow_down_down__272_;
+            this.tsbFinal.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbFinal.Name = "tsbFinal";
+            this.tsbFinal.Size = new System.Drawing.Size(23, 22);
+            this.tsbFinal.Text = "Enviar al final";
+            this.tsbFinal.Click += new System.EventHandler(this.tsbFinal_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbCerrar
             // 
@@ -207,7 +281,7 @@
             this.gpbSucursales.Controls.Add(this.lblNombreSucursal);
             this.gpbSucursales.Location = new System.Drawing.Point(12, 28);
             this.gpbSucursales.Name = "gpbSucursales";
-            this.gpbSucursales.Size = new System.Drawing.Size(638, 275);
+            this.gpbSucursales.Size = new System.Drawing.Size(642, 275);
             this.gpbSucursales.TabIndex = 4;
             this.gpbSucursales.TabStop = false;
             this.gpbSucursales.Text = "Sucursales";
@@ -302,10 +376,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(662, 315);
+            this.ClientSize = new System.Drawing.Size(666, 315);
             this.Controls.Add(this.gpbSucursales);
             this.Controls.Add(this.tspSucursales);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmSucursales";
@@ -350,5 +425,11 @@
         private System.Windows.Forms.ToolStripButton tsbCerrar;
         private System.Windows.Forms.Label lblID;
         private System.Windows.Forms.Label lblIDE;
+        private System.Windows.Forms.ToolStripButton tsbOrdenar;
+        private System.Windows.Forms.ToolStripButton tsbSubir;
+        private System.Windows.Forms.ToolStripButton tsbBajar;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton tsbInicio;
+        private System.Windows.Forms.ToolStripButton tsbFinal;
     }
 }

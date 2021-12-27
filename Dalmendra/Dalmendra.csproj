@@ -11,6 +11,7 @@
     <AssemblyName>Dalmendra</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publicar\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -23,7 +24,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -46,6 +46,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -66,6 +69,12 @@
     <Compile Include="cDatos.cs" />
     <Compile Include="cExistencias.cs" />
     <Compile Include="cModul.cs" />
+    <Compile Include="frmConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConfig.Designer.cs">
+      <DependentUpon>frmConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="cSQLite.cs" />
     <Compile Include="cSQLserver.cs" />
     <Compile Include="cSucursal.cs" />
@@ -87,6 +96,12 @@
     <Compile Include="frmListar.Designer.cs">
       <DependentUpon>frmListar.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmOrdenExistencias.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOrdenExistencias.Designer.cs">
+      <DependentUpon>frmOrdenExistencias.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,6 +116,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmConfig.resx">
+      <DependentUpon>frmConfig.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmListadoCategorias.resx">
       <DependentUpon>frmListadoCategorias.cs</DependentUpon>
     </EmbeddedResource>
@@ -109,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmListar.resx">
       <DependentUpon>frmListar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOrdenExistencias.resx">
+      <DependentUpon>frmOrdenExistencias.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmPrincipal.resx">
       <DependentUpon>frmPrincipal.cs</DependentUpon>
@@ -173,6 +194,49 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\save_item [#1410].png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow_up [#267].png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow_down [#269].png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\charger [#696].png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow_up_up[#272].png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow_down_down[#272].png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\network_3 [#1082].png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="Dalmendra.pdb">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="System.Data.SQLite.pdb">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

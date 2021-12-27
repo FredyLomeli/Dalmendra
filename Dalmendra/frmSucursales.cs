@@ -19,16 +19,20 @@ namespace Dalmendra
         cSQLserver nSQLserver = new cSQLserver();
         cSucursal nSucursal = new cSucursal();
         cExistencias nExistencias = new cExistencias();
+        int conteo = 0;
         // 0 sin estado
         // 1 nuevo
         // 2 edición
-        string status = "0";
+        // 3 Ordenando
+        string status;
 
         private void frmSucursales_Load(object sender, EventArgs e)
         {
             cModul.mSucursalesListado = nSucursal.consultaTodo();
             ConsultarSucursales();
             cModul.banActualizacion = false;
+            this.conteo = cModul.mSucursalesListado.Rows.Count;
+            status = "0";
         }
 
         private void tsbNuevo_Click(object sender, EventArgs e)
@@ -88,7 +92,7 @@ namespace Dalmendra
                 if (dialogResult == DialogResult.Yes)
                 {
                     nSucursal.delete(lblID.Text.Trim());
-                    nExistencias.delete(lblID.Text.Trim());
+                    nExistencias.deletePorSucursal(lblID.Text.Trim());
                     cModul.mSucursalesListado = nSucursal.consultaTodo();
                     ConsultarSucursales();
 
@@ -150,36 +154,42 @@ namespace Dalmendra
             this.Close();
             inhabilitarCampos();
             limpiarCampos();
+            this.status = "";
         }
 
         private void habilitarCampos()
         {
-            txtNombreSucursal.Enabled = true;
-            txtServidor.Enabled = true;
-            txtDB.Enabled = true;
-            txtUsuario.Enabled = true;
-            txtContraseña.Enabled = true;
-            tsbNuevo.Enabled = false;
-            tsbEditar.Enabled = false;
-            tsbGuardar.Enabled = true;
-            tsbdelete.Enabled = false;
-            tsbCancelar.Enabled = true;
-            tsbTest.Enabled = true;
+            this.txtNombreSucursal.Enabled = true;
+            this.txtServidor.Enabled = true;
+            this.txtDB.Enabled = true;
+            this.txtUsuario.Enabled = true;
+            this.txtContraseña.Enabled = true;
+            this.tsbNuevo.Enabled = false;
+            this.tsbEditar.Enabled = false;
+            this.tsbGuardar.Enabled = true;
+            this.tsbdelete.Enabled = false;
+            this.tsbCancelar.Enabled = true;
+            this.tsbTest.Enabled = true;
         }
 
         private void inhabilitarCampos()
         {
-            txtNombreSucursal.Enabled = false;
-            txtServidor.Enabled = false;
-            txtDB.Enabled = false;
-            txtUsuario.Enabled = false;
-            txtContraseña.Enabled = false;
-            tsbNuevo.Enabled = true;
-            tsbEditar.Enabled = false;
-            tsbGuardar.Enabled = false;
-            tsbdelete.Enabled = false;
-            tsbCancelar.Enabled = false;
-            tsbTest.Enabled = false;
+            this.txtNombreSucursal.Enabled = false;
+            this.txtServidor.Enabled = false;
+            this.txtDB.Enabled = false;
+            this.txtUsuario.Enabled = false;
+            this.txtContraseña.Enabled = false;
+            this.tsbNuevo.Enabled = true;
+            this.tsbEditar.Enabled = false;
+            this.tsbGuardar.Enabled = false;
+            this.tsbdelete.Enabled = false;
+            this.tsbCancelar.Enabled = false;
+            this.tsbTest.Enabled = false;
+            this.tsbSubir.Enabled = false;
+            this.tsbBajar.Enabled = false;
+            this.tsbOrdenar.Enabled = true;
+            this.tsbFinal.Enabled = false;
+            this.tsbInicio.Enabled = false;
         }
 
         private void limpiarCampos()
@@ -209,20 +219,56 @@ namespace Dalmendra
             return true;
         }
 
-        private void dgvSucursales_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvSucursales_SelectionChanged(object sender, EventArgs e)
         {
-            if (status == "0")
+            try
             {
-                // Asigna valor a los campos
-                lblID.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[0].Value.ToString();
-                txtNombreSucursal.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[1].Value.ToString();
-                txtServidor.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[2].Value.ToString();
-                txtDB.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[3].Value.ToString();
-                txtUsuario.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[4].Value.ToString();
-                tsbEditar.Enabled = true;
-                tsbdelete.Enabled = true;
-                tsbCancelar.Enabled = true;
-                tsbTest.Enabled = true;
+                if (status == "0")
+                {
+                    // Asigna valor a los campos
+                    lblID.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[0].Value.ToString();
+                    txtNombreSucursal.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[1].Value.ToString();
+                    txtServidor.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[2].Value.ToString();
+                    txtDB.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[3].Value.ToString();
+                    txtUsuario.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[4].Value.ToString();
+                    tsbEditar.Enabled = true;
+                    tsbdelete.Enabled = true;
+                    tsbCancelar.Enabled = true;
+                    tsbTest.Enabled = true;
+                }
+                else if (status == "3")
+                {
+                    validaFuncionesOrden();
+                }
+            }
+            catch (Exception exe)
+            {
+            }
+        }
+
+        private void validaFuncionesOrden()
+        {
+            // Valida el registro seleccionado sea el primero
+            if (dgvSucursales.SelectedRows[0].Index == 0)
+            {
+                this.tsbInicio.Enabled = false;
+                this.tsbSubir.Enabled = false;
+            }
+            else
+            {
+                this.tsbInicio.Enabled = true;
+                this.tsbSubir.Enabled = true;
+            }
+            // Valida el registro seleccionado sea el ultimo
+            if (dgvSucursales.SelectedRows[0].Index == cModul.mSucursalesListado.Rows.Count - 1)
+            {
+                this.tsbFinal.Enabled = false;
+                this.tsbBajar.Enabled = false;
+            }
+            else
+            {
+                this.tsbFinal.Enabled = true;
+                this.tsbBajar.Enabled = true;
             }
         }
 
@@ -230,8 +276,9 @@ namespace Dalmendra
         {
             if (status == "1")
             {
+               this.conteo = this.conteo + 1;
                 nSucursal.insert(txtNombreSucursal.Text.Trim(), txtServidor.Text.Trim(),
-                    txtDB.Text.Trim(), txtUsuario.Text.Trim(), txtContraseña.Text.Trim());
+                    txtDB.Text.Trim(), txtUsuario.Text.Trim(), txtContraseña.Text.Trim(), this.conteo);
                 MessageBox.Show(cModul.SucursalGuardadaCorrecto, cModul.NombreDelPrograma, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (status == "2")
@@ -266,18 +313,170 @@ namespace Dalmendra
             
         }
 
-        private void ConsultarSucursales() 
+        private void ConsultarSucursales(bool ban = true) 
         {
-            dgvSucursales.DataSource = cModul.mSucursalesListado;
+            cModul.mSucursalesListado.DefaultView.Sort = "orden ASC";
+            cModul.mSucursalesListado = cModul.mSucursalesListado.DefaultView.ToTable();
+            DataTable dt = cModul.mSucursalesListado.Copy();
+            dt.Columns.Remove("orden");
+            dgvSucursales.DataSource = dt;
+            //Evita que se pueda ordenar las columnas
+            for (int i = 0; i < dgvSucursales.Columns.Count; i++)
+            {
+                dgvSucursales.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
             dgvSucursales.AutoResizeColumns();
             dgvSucursales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             // Consulta las sucursales registradas
-            cModul.mSucursales = nSucursal.consulta();
+            if(ban)
+                cModul.mSucursales = nSucursal.consulta();
         }
 
         private void frmSucursales_FormClosed(object sender, FormClosedEventArgs e)
         {
             cModul.banActualizacion = true;
+            this.status = "";
+        }
+
+        private void tsbOrdenar_Click(object sender, EventArgs e)
+        {
+            if (dgvSucursales.Rows.Count > 1)
+            {
+                inhabilitarCampos();
+                limpiarCampos();
+                this.tsbBajar.Enabled = true;
+                this.tsbInicio.Enabled = true;
+                this.tsbSubir.Enabled = true;
+                this.tsbFinal.Enabled = true;
+                this.tsbOrdenar.Enabled = false;
+                this.tsbNuevo.Enabled = false;
+                this.tsbCancelar.Enabled = true;
+                //this.tsbGuardar.Enabled = true;
+                this.status = "3";
+                validaFuncionesOrden();
+            }
+            else
+                MessageBox.Show(cModul.OrdenDebeSerMayorQueUno, cModul.NombreDelPrograma, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void tsbBajar_Click(object sender, EventArgs e)
+        {
+            // Intercambia el orden de los valores seleccionados.
+            int indexSeleccted = dgvSucursales.SelectedRows[0].Index;
+            int ordenDesplazado = Int32.Parse(cModul.mSucursalesListado.Rows[indexSeleccted + 1]["orden"].ToString());
+            string idOrdenDesplazado = cModul.mSucursalesListado.Rows[indexSeleccted + 1]["ID"].ToString();
+            int ordenMover = Int32.Parse(cModul.mSucursalesListado.Rows[indexSeleccted]["orden"].ToString());
+            string idOrdenMover = cModul.mSucursalesListado.Rows[indexSeleccted]["ID"].ToString();
+            cModul.mSucursalesListado.Rows[dgvSucursales.SelectedRows[0].Index + 1]["orden"] = ordenMover;
+            cModul.mSucursalesListado.Rows[dgvSucursales.SelectedRows[0].Index]["orden"] = ordenDesplazado;
+            // Actualiza los datos en la DB
+            nSucursal.updateOrden(idOrdenDesplazado, ordenMover);
+            nSucursal.updateOrden(idOrdenMover, ordenDesplazado);
+            // Actualiza la tabla offline   
+            ConsultarSucursales(false);
+            dgvSucursales.Rows[indexSeleccted + 1].Selected = true;
+        }
+
+        private void tsbSubir_Click(object sender, EventArgs e)
+        {
+            // Intercambia el orden de los valores seleccionados.
+            int indexSeleccted = dgvSucursales.SelectedRows[0].Index;
+            int ordenDesplazado = Int32.Parse(cModul.mSucursalesListado.Rows[ indexSeleccted -1]["orden"].ToString());
+            string idOrdenDesplazado = cModul.mSucursalesListado.Rows[indexSeleccted - 1]["ID"].ToString();
+            int ordenMover = Int32.Parse(cModul.mSucursalesListado.Rows[indexSeleccted]["orden"].ToString());
+            string idOrdenMover = cModul.mSucursalesListado.Rows[indexSeleccted]["ID"].ToString();
+            cModul.mSucursalesListado.Rows[dgvSucursales.SelectedRows[0].Index - 1]["orden"] = ordenMover;
+            cModul.mSucursalesListado.Rows[dgvSucursales.SelectedRows[0].Index]["orden"] = ordenDesplazado;
+            // Actualiza los datos en la DB
+            nSucursal.updateOrden(idOrdenDesplazado, ordenMover);
+            nSucursal.updateOrden(idOrdenMover, ordenDesplazado);
+            // Actualiza la tabla offline   
+            ConsultarSucursales(false);
+            dgvSucursales.Rows[indexSeleccted - 1].Selected = true;
+        }
+
+        private void tsbInicio_Click(object sender, EventArgs e)
+        {
+            // Intercambia el orden de los valores seleccionados.
+            int indexSeleccted = dgvSucursales.SelectedRows[0].Index;
+            // Variable que controla el orden de los valores
+            int newOrden = 2;
+            // Recorreo el listado para signar el orden.
+            for (int i = 0; i < cModul.mSucursalesListado.Rows.Count; i++)
+            {
+                // Si es el indice seleccionado lo marca como primero en la lista
+                if (i == indexSeleccted)
+                {
+                    cModul.mSucursalesListado.Rows[i]["orden"] = 1;
+                    nSucursal.updateOrden(cModul.mSucursalesListado.Rows[i]["ID"].ToString(), 1);
+                }
+                // Si no es el indice seleccionado lo marca como un consecutivo
+                else
+                {
+                    cModul.mSucursalesListado.Rows[i]["orden"] = newOrden;
+                    nSucursal.updateOrden(cModul.mSucursalesListado.Rows[i]["ID"].ToString(), newOrden);
+                    newOrden++;
+                }
+            }   
+            // Actualiza la tabla offline   
+            ConsultarSucursales(false);
+            dgvSucursales.Rows[0].Selected = true;
+        }
+
+        private void tsbFinal_Click(object sender, EventArgs e)
+        {
+            // Intercambia el orden de los valores seleccionados.
+            int indexSeleccted = dgvSucursales.SelectedRows[0].Index;
+            // Variable que controla el orden de los valores
+            int newOrden = 1;
+            // Recorreo el listado para signar el orden.
+            for (int i = 0; i < cModul.mSucursalesListado.Rows.Count; i++)
+            {
+                // Si es el indice seleccionado lo marca como primero en la lista
+                if (i == indexSeleccted)
+                {
+                    cModul.mSucursalesListado.Rows[i]["orden"] = cModul.mSucursalesListado.Rows.Count;
+                    nSucursal.updateOrden(cModul.mSucursalesListado.Rows[i]["ID"].ToString(),
+                        cModul.mSucursalesListado.Rows.Count);
+                }
+                // Si no es el indice seleccionado lo marca como un consecutivo
+                else
+                {
+                    cModul.mSucursalesListado.Rows[i]["orden"] = newOrden;
+                    nSucursal.updateOrden(cModul.mSucursalesListado.Rows[i]["ID"].ToString(), newOrden);
+                    newOrden++;
+                }
+            }
+            // Actualiza la tabla offline   
+            ConsultarSucursales(false);
+            dgvSucursales.Rows[cModul.mSucursalesListado.Rows.Count - 1].Selected = true;
+        }
+
+        private void dgvSucursales_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (status == "0" && lblID.Text == "")
+                {
+                    // Asigna valor a los campos
+                    lblID.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[0].Value.ToString();
+                    txtNombreSucursal.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[1].Value.ToString();
+                    txtServidor.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[2].Value.ToString();
+                    txtDB.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[3].Value.ToString();
+                    txtUsuario.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[4].Value.ToString();
+                    tsbEditar.Enabled = true;
+                    tsbdelete.Enabled = true;
+                    tsbCancelar.Enabled = true;
+                    tsbTest.Enabled = true;
+                }
+                else if (status == "3")
+                {
+                    validaFuncionesOrden();
+                }
+            }
+            catch (Exception exe)
+            {
+            }
         }
     }
 }

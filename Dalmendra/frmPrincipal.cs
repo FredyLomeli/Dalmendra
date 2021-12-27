@@ -20,18 +20,27 @@ namespace Dalmendra
         frmSucursales fSucursales = new frmSucursales();
         frmCategorias fCategorias = new frmCategorias();
         frmListadoCategorias fListadoCategorias = new frmListadoCategorias();
+        frmOrdenExistencias fOrdenExistencias = new frmOrdenExistencias();
+        frmConfig fConfiguracion;
         cSucursal nSucursal = new cSucursal();
         cSQLserver nSQLserver = new cSQLserver();
         cExistencias nExistencias = new cExistencias();
+        cCategoria nCategoria = new cCategoria();
+
 
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
+            fConfiguracion = new frmConfig(this, fListadoCategorias);
             // Verifica la base de datos en correcto estado.
             cSQLite.Up();
             // Consulta las sucursales registradas
             cModul.mSucursales = nSucursal.consulta();
             // Consulta las Existencias registradas
             cModul.mExistencias = nExistencias.consulta();
+            // Consulta los datos de configuracion
+            cDatos.ConsultaDatos();
+            // Definimos si se activa el times de sincronizacion
+            defineTimerSync();
             // Si es la primera vez abre la configuración de la Base de datos.
             if (cModul.ThisFirstTime)
             {
@@ -40,13 +49,30 @@ namespace Dalmendra
             // Si no es la primera vez valida las conexiones.
             else
             {
-                openListadoSinCodigo();
+                actualizarExistencias();
+                if (cModul.SucursalesActivas.Rows.Count > 0)
+                {
+                    //Carga las vista principal
+                    switch (cModul.FirstReport)
+                    {
+                        case "PorCategorias":
+                            OpenListadoCategorias();
+                            break;
+                        case "ListadoConCodigo":
+                            openListadoConCodigo();
+                            break;
+                        case "ListadoSinCodigo":
+                            openListadoSinCodigo();
+                            break;
+                    }
+                }
+                else
+                {
+                    // Avisa que no existe ninguna categoria para mostrar el reporte
+                    MessageBox.Show(cModul.SinConexionConSucursales, cModul.NombreDelPrograma, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    fSucursales.ShowDialog();
+                }
             }
-            
-        }
-        private void sucursalesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            fSucursales.ShowDialog();
         }
 
         private void actualizarExistencias()
@@ -55,6 +81,7 @@ namespace Dalmendra
             DataTable Tabla = new DataTable();
             Tabla.Columns.Add(new DataColumn("id"));
             Tabla.Columns.Add(new DataColumn("nombre_sucursal"));
+            Tabla.Columns.Add(new DataColumn("fecha_actualizacion"));
             if (cModul.mSucursales != null && cModul.mSucursales.Rows.Count > 0)
             {
                 foreach (DataRow dr in cModul.mSucursales.Rows)
@@ -71,8 +98,6 @@ namespace Dalmendra
                             Renglon = Tabla.NewRow();
                             Renglon[0] = dr[0].ToString();
                             Renglon[1] = dr[1].ToString();
-                            // Agrega el registro al combobox
-                            Tabla.Rows.Add(Renglon);
                             // Asigna las variables para la consulta
                             cSucursal newSucursal = new cSucursal();
                             newSucursal.id = dr[0].ToString();
@@ -81,10 +106,14 @@ namespace Dalmendra
                             newSucursal.catalog = dr[3].ToString();
                             newSucursal.user_id = dr[4].ToString();
                             newSucursal.password = dr[5].ToString();
-                            newSucursal.fecha_hora_actualizacion = dr[6].ToString();
+                            newSucursal.fecha_hora_actualizacion = dr[7].ToString();
                             // Actualiza las existencias
                             string fecha;
                             nSQLserver.ConsultarInventario(newSucursal, out fecha);
+                            // Carga la fecha de actualización
+                            Renglon[2] = fecha;
+                            // Agrega el registro al combobox
+                            Tabla.Rows.Add(Renglon);
                             //actualiza la fecha del registor de sucursales
                             for (int i = 0; i < cModul.mSucursalesListado.Rows.Count; i++)
                             {
@@ -96,12 +125,14 @@ namespace Dalmendra
                             // Consulta las Existencias registradas
                             cModul.mExistencias = nExistencias.consulta();
                         }
-                        else if (dr[6].ToString() != null)
+                        //Si no hay conexion pero tiene fecha de actualizacion se muestra como sucursal activa
+                        else if (!string.IsNullOrEmpty(dr[7].ToString().Trim()))
                         {
                             // Generamos el combo de
                             Renglon = Tabla.NewRow();
                             Renglon[0] = dr[0].ToString();
                             Renglon[1] = dr[1].ToString();
+                            Renglon[2] = dr[7].ToString();
                             Tabla.Rows.Add(Renglon);
                         }
                     }
@@ -113,7 +144,6 @@ namespace Dalmendra
             else
                 fSucursales.ShowDialog();
             cModul.SucursalesActivas = Tabla;
-            
         }
 
         private void tmrActualizacion_Tick(object sender, EventArgs e)
@@ -121,14 +151,34 @@ namespace Dalmendra
             if (cModul.banActualizacion)
             {
                 actualizarExistencias();
-                this.fListar.llenarListado();
+                if(cModul.EstaAbiertoFrmListado)
+                    this.fListar.llenarListado();
+                if(cModul.EstaAbiertoFrmCategorias)
+                {
+                    this.fListadoCategorias.crearVistaCategorias();
+                    this.fListadoCategorias.deSeleccionarDataGrids();
+                }
             }
-
         }
 
         private void tsmConCodigo_Click(object sender, EventArgs e)
         {
             actualizarExistencias();
+            if (cModul.SucursalesActivas.Rows.Count > 0)
+            {
+                openListadoConCodigo();
+            }
+            else
+            {
+                // Avisa que no existe ninguna categoria para mostrar el reporte
+                MessageBox.Show(cModul.SinConexionConSucursales, cModul.NombreDelPrograma, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                fSucursales.ShowDialog();
+            }
+        }
+
+        public void openListadoConCodigo()
+        {
+            //actualizarExistencias();
             this.fListar.MdiParent = this;
             this.fListar.WindowState = FormWindowState.Maximized;
             this.fListar.conCodigo = true;
@@ -142,17 +192,22 @@ namespace Dalmendra
 
         private void tsmSinCodigo_Click(object sender, EventArgs e)
         {
-            openListadoSinCodigo();
-        }
-
-        private void categoriaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            fCategorias.ShowDialog();
+            actualizarExistencias();
+            if (cModul.SucursalesActivas.Rows.Count > 0)
+            {
+                openListadoSinCodigo();
+            }
+            else
+            {
+                // Avisa que no existe ninguna categoria para mostrar el reporte
+                MessageBox.Show(cModul.SinConexionConSucursales, cModul.NombreDelPrograma, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                fSucursales.ShowDialog();
+            }
         }
 
         public void openListadoSinCodigo()
         {
-            actualizarExistencias();
+            //actualizarExistencias();
             this.fListar.MdiParent = this;
             this.fListar.WindowState = FormWindowState.Maximized;
             this.fListar.conCodigo = false;
@@ -167,30 +222,81 @@ namespace Dalmendra
         private void porCategoriasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             actualizarExistencias();
-            this.fListadoCategorias.MdiParent = this;
-            this.fListadoCategorias.WindowState = FormWindowState.Maximized;
-            //this.fCategorias.conCodigo = false;
-            //this.fCategorias.Initialized = false;
-            //this.fCategorias.cmbSucursales.DataSource = cModul.SucursalesActivas;
-            //this.fCategorias.cmbSucursales.DisplayMember = "nombre_sucursal";
-            //this.fCategorias.cmbSucursales.ValueMember = "id";
-            //this.fCategorias.Initialized = true;
-            this.fListadoCategorias.Show();
-            this.fListadoCategorias.dgv1.ClearSelection();
-            this.fListadoCategorias.dgv2.ClearSelection();
-            this.fListadoCategorias.dgv3.ClearSelection();
-            this.fListadoCategorias.dgv4.ClearSelection();
-            this.fListadoCategorias.dgv5.ClearSelection();
-            this.fListadoCategorias.dgv6.ClearSelection();
-            this.fListadoCategorias.dgv7.ClearSelection();
-            this.fListadoCategorias.dgv8.ClearSelection();
-            this.fListadoCategorias.dgv9.ClearSelection();
-            this.fListadoCategorias.dgv10.ClearSelection();
-            this.fListadoCategorias.dgv11.ClearSelection();
-            this.fListadoCategorias.dgv12.ClearSelection();
-            this.fListadoCategorias.dgv13.ClearSelection();
-            this.fListadoCategorias.dgv14.ClearSelection();
+            if (cModul.SucursalesActivas.Rows.Count > 0)
+            {
+                OpenListadoCategorias();
+            }
+            else
+            {
+                // Avisa que no existe ninguna categoria para mostrar el reporte
+                MessageBox.Show(cModul.SinConexionConSucursales, cModul.NombreDelPrograma, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                fSucursales.ShowDialog();
+            }
         }
 
+        private void sucursalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fSucursales.ShowDialog();
+        }
+
+        private void categoriasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fCategorias.ShowDialog();
+        }
+
+        private void articulosToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            fOrdenExistencias.ShowDialog();
+        }
+
+        private void configuraciónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fConfiguracion.ShowDialog();
+        }
+
+        private void OpenListadoCategorias()
+        {
+            //Consulta las categorias 
+            cModul.mCategorias = nCategoria.consulta();
+            //Valida el numero de Categorias con estado mayor activo
+            int numberOfCartegorys = cModul.mCategorias.Select("estado = 1").Length;
+            //Valida el numero de categorias activas que existen
+            if (numberOfCartegorys < 1)
+            {
+                // Avisa que no existe ninguna categoria para mostrar el reporte
+                MessageBox.Show(cModul.NoExistenCategoriasActivas, cModul.NombreDelPrograma, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //Abre la pantalla para la captura de nuevas categorias
+                fCategorias.ShowDialog();
+            }
+            else // Abre las categorias
+            {
+                //actualizarExistencias();
+                this.fListadoCategorias.MdiParent = this;
+                this.fListadoCategorias.WindowState = FormWindowState.Maximized;
+                //this.fCategorias.conCodigo = false;
+                //this.fCategorias.Initialized = false;
+                //this.fCategorias.cmbSucursales.DataSource = cModul.SucursalesActivas;
+                //this.fCategorias.cmbSucursales.DisplayMember = "nombre_sucursal";
+                //this.fCategorias.cmbSucursales.ValueMember = "id";
+                //this.fCategorias.Initialized = true;
+                this.fListadoCategorias.Show();
+                this.fListadoCategorias.deSeleccionarDataGrids();
+                // Definimos si se actva el timer de cambio de sucursarl.
+                this.fListadoCategorias.defineTimerChangeSucursal();
+            }
+        }
+
+        //Define el tiempo en que se ejecuta el timer de sincronización
+        public void defineTimerSync()
+        {
+            int time = Int32.Parse(cModul.TimeSyncSucursal);
+            if (time > 0)
+            {
+                tmrActualizacion.Enabled = true;
+                tmrActualizacion.Interval = cDatos.convertirMinToMiliseg(time);
+            }
+            else
+                tmrActualizacion.Enabled = false;
+        }
     }
 }

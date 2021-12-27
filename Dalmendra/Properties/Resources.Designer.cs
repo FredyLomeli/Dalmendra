@@ -63,6 +63,56 @@ namespace Dalmendra.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap arrow_down___269_ {
+            get {
+                object obj = ResourceManager.GetObject("arrow_down [#269]", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_down_down__272_ {
+            get {
+                object obj = ResourceManager.GetObject("arrow_down_down[#272]", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_up___267_ {
+            get {
+                object obj = ResourceManager.GetObject("arrow_up [#267]", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_up_up__272_ {
+            get {
+                object obj = ResourceManager.GetObject("arrow_up_up[#272]", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap charger___696_ {
+            get {
+                object obj = ResourceManager.GetObject("charger [#696]", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap close___1511_ {
             get {
                 object obj = ResourceManager.GetObject("close [#1511]", resourceCulture);
@@ -86,6 +136,16 @@ namespace Dalmendra.Properties {
         internal static System.Drawing.Bitmap delete___1487_ {
             get {
                 object obj = ResourceManager.GetObject("delete [#1487]", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap network_3___1082_ {
+            get {
+                object obj = ResourceManager.GetObject("network_3 [#1082]", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

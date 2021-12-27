@@ -13,3 +13,5 @@ C:\Users\Fredy\OneDrive - UNIVERSIDAD INTERAMERICANA PARA EL DESARROLLO\Document
 C:\Users\Fredy\OneDrive - UNIVERSIDAD INTERAMERICANA PARA EL DESARROLLO\Documents\Visual Studio 2012\Dalmendra\Dalmendra\obj\Debug\Dalmendra.frmSucursales.resources
 C:\Users\Fredy\OneDrive - UNIVERSIDAD INTERAMERICANA PARA EL DESARROLLO\Documents\Visual Studio 2012\Dalmendra\Dalmendra\obj\Debug\Dalmendra.frmCategorias.resources
 C:\Users\Fredy\OneDrive - UNIVERSIDAD INTERAMERICANA PARA EL DESARROLLO\Documents\Visual Studio 2012\Dalmendra\Dalmendra\obj\Debug\Dalmendra.frmListadoCategorias.resources
+C:\Users\Fredy\OneDrive - UNIVERSIDAD INTERAMERICANA PARA EL DESARROLLO\Documents\Visual Studio 2012\Dalmendra\Dalmendra\obj\Debug\Dalmendra.frmOrdenExistencias.resources
+C:\Users\Fredy\OneDrive - UNIVERSIDAD INTERAMERICANA PARA EL DESARROLLO\Documents\Visual Studio 2012\Dalmendra\Dalmendra\obj\Debug\Dalmendra.frmConfig.resources

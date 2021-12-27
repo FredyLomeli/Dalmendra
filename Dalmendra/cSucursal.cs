@@ -17,17 +17,18 @@ namespace Dalmendra
         public string catalog;
         public string user_id;
         public string password;
+        public int orden;
         public string fecha_hora_actualizacion;
 
         public void insert(string nombre_sucursal, string data_source, string catalog,
-            string user_id, string password)
+            string user_id, string password, int orden)
         {
             using (var ctx = cSQLite.GetInstance())
             {
                 ctx.Open();
                 // Agrega el registro de la sucursal
                 var cadena = "INSERT INTO sucursales (nombre_sucursal, data_source, " +
-                    "catalog, user_id, password) VALUES (?, ?, ?, ?, ?)";
+                    "catalog, user_id, password, orden) VALUES (?, ?, ?, ?, ?, ?)";
                 using (var command = new SQLiteCommand(cadena, ctx))
                 {
                     command.Parameters.Add(new SQLiteParameter("nombre_sucursal", nombre_sucursal));
@@ -35,6 +36,7 @@ namespace Dalmendra
                     command.Parameters.Add(new SQLiteParameter("catalog", catalog));
                     command.Parameters.Add(new SQLiteParameter("user_id", user_id));
                     command.Parameters.Add(new SQLiteParameter("password", password));
+                    command.Parameters.Add(new SQLiteParameter("orden", orden));
                     command.ExecuteNonQuery();
                 }
                 ctx.Close();
@@ -89,6 +91,24 @@ namespace Dalmendra
             }
         }
 
+        public void updateOrden(string id, int orden)
+        {
+            using (var ctx = cSQLite.GetInstance())
+            {
+                ctx.Open();
+                // Edita el registro de la sucursal
+                var query = "UPDATE sucursales SET orden = :orden WHERE id = :id;";
+                using (SQLiteCommand command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("orden", orden));
+                    command.Parameters.Add(new SQLiteParameter("id", id));
+                    command.ExecuteNonQuery();
+                }
+                ctx.Close();
+                ctx.Dispose();
+            }
+        }
+
         public void delete(string id)
         {
             using (var ctx = cSQLite.GetInstance())
@@ -114,7 +134,8 @@ namespace Dalmendra
                 // Edita el registro de la sucursal
                 var query = "SELECT id AS ID, nombre_sucursal AS \"Nombre Sucursal\", " +
                     "data_source AS Servidor, catalog AS \"Base de datos\", " +
-                    "user_id AS Usuario, fecha_hora_actualizacion AS Enlace FROM sucursales;";
+                    "user_id AS Usuario, orden, fecha_hora_actualizacion AS Enlace FROM sucursales "+
+                    "ORDER BY orden ASC;";
                 // Adaptador de datos, DataSet y tabla
                 using (SQLiteDataAdapter db = new SQLiteDataAdapter(query, ctx))
                 {
@@ -138,7 +159,7 @@ namespace Dalmendra
             {
                 ctx.Open();
                 // Edita el registro de la sucursal
-                var query = "SELECT * FROM sucursales;";
+                var query = "SELECT * FROM sucursales ORDER BY orden ASC;";
                 // Adaptador de datos, DataSet y tabla
                 using (SQLiteDataAdapter db = new SQLiteDataAdapter(query, ctx))
                 {
@@ -164,7 +185,7 @@ namespace Dalmendra
                 ctx.Open();
                 try
                 {
-                    string quer = "SELECT * FROM sucursales WHERE id = :id;";
+                    string quer = "SELECT * FROM sucursales WHERE id = :id ORDER BY orden ASC;";
                     SQLiteCommand cmd = new SQLiteCommand(quer, ctx);
                     cmd.Parameters.Add(new SQLiteParameter("id", id));
                     SQLiteDataReader result = cmd.ExecuteReader();
@@ -195,7 +216,7 @@ namespace Dalmendra
             using (var ctx = cSQLite.GetInstance())
             {
                 ctx.Open();
-                string quer = "SELECT * FROM sucursales ORDER BY id DESC LIMIT 1 ;";
+                string quer = "SELECT * FROM sucursales ORDER BY id DESC LIMIT 1;";
                 SQLiteCommand cmd = new SQLiteCommand(quer, ctx);
                 try
                 {

@@ -13,6 +13,7 @@ namespace Dalmendra
         public string id;
         public string descripcion;
         public string palabra_clave;
+        public int orden;
         public string estado;
 
         public void insert()
@@ -22,11 +23,12 @@ namespace Dalmendra
                 ctx.Open();
                 // Agrega el registro de la sucursal
                 var cadena = "INSERT INTO categorias (descripcion, palabra_clave, " +
-                    "estado) VALUES (?, ?, ?)";
+                    "orden, estado) VALUES (?, ?, ?, ?)";
                 using (var command = new SQLiteCommand(cadena, ctx))
                 {
                     command.Parameters.Add(new SQLiteParameter("descripcion", this.descripcion));
                     command.Parameters.Add(new SQLiteParameter("palabra_clave", this.palabra_clave));
+                    command.Parameters.Add(new SQLiteParameter("orden", this.orden));
                     command.Parameters.Add(new SQLiteParameter("estado", this.estado));
                     command.ExecuteNonQuery();
                 }
@@ -41,14 +43,32 @@ namespace Dalmendra
             {
                 ctx.Open();
                 // Edita el registro de la sucursal
-                var query = "UPDATE categorias SET descripcion = :descripcion, palabra_clave = :palabra_clave," +
-                    " estado = :estado WHERE id = :id;";
+                var query = "UPDATE categorias SET descripcion = :descripcion, " +
+                    "palabra_clave = :palabra_clave, estado = :estado WHERE id = :id;";
                 using (SQLiteCommand command = new SQLiteCommand(query, ctx))
                 {
                     command.Parameters.Add(new SQLiteParameter("descripcion", this.descripcion));
                     command.Parameters.Add(new SQLiteParameter("palabra_clave", this.palabra_clave));
                     command.Parameters.Add(new SQLiteParameter("estado", this.estado));
                     command.Parameters.Add(new SQLiteParameter("id", this.id));
+                    command.ExecuteNonQuery();
+                }
+                ctx.Close();
+                ctx.Dispose();
+            }
+        }
+
+        public void updateOrden(string id, int orden)
+        {
+            using (var ctx = cSQLite.GetInstance())
+            {
+                ctx.Open();
+                // Edita el registro de la sucursal
+                var query = "UPDATE categorias SET orden = :orden WHERE id = :id;";
+                using (SQLiteCommand command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("orden", orden));
+                    command.Parameters.Add(new SQLiteParameter("id", id));
                     command.ExecuteNonQuery();
                 }
                 ctx.Close();
@@ -80,7 +100,8 @@ namespace Dalmendra
                 ctx.Open();
                 // Edita el registro de la sucursal
                 var query = "SELECT id AS ID, descripcion AS \"Descripción\", " +
-                    "palabra_clave AS \"Clave\", estado AS \"Estado\" FROM categorias;";
+                    "palabra_clave AS \"Clave\", orden, estado AS \"Estado\" " +
+                    "FROM categorias ORDER BY orden ASC;";
                 // Adaptador de datos, DataSet y tabla
                 using (SQLiteDataAdapter db = new SQLiteDataAdapter(query, ctx))
                 {
@@ -104,7 +125,7 @@ namespace Dalmendra
             {
                 ctx.Open();
                 // Edita el registro de la sucursal
-                var query = "SELECT * FROM categorias;";
+                var query = "SELECT * FROM categorias ORDER BY orden ASC;";
                 // Adaptador de datos, DataSet y tabla
                 using (SQLiteDataAdapter db = new SQLiteDataAdapter(query, ctx))
                 {

@@ -29,6 +29,7 @@ namespace Dalmendra
         private void frmListar_Load(object sender, EventArgs e)
         {
             llenarListado();
+            cModul.EstaAbiertoFrmListado = true;
         }
 
         public void llenarListado()
@@ -37,7 +38,7 @@ namespace Dalmendra
             string selecteVal = cmbSucursales.SelectedValue.ToString();
             string selecteTex = cmbSucursales.Text.ToString();
             // indica que surcursal esta mostando
-            this.Text= "Existencias " + selecteTex;
+            this.Text = "Existencias " + selecteTex;
             lblSucursalName.Text = selecteTex;
             for (int i = 0; i < cModul.mSucursales.Rows.Count; i++)
             {
@@ -150,6 +151,7 @@ namespace Dalmendra
 
         private void frmListar_FormClosing(object sender, FormClosingEventArgs e)
         {
+            cModul.EstaAbiertoFrmListado = false;
             //Hiding the window, because closing it makes the window unaccessible.
             this.Hide();
             this.Parent = null;

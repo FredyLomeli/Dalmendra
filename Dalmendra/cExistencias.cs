@@ -16,15 +16,16 @@ namespace Dalmendra
         public string codigo;
         public string descripcion;
         public string existencia;
-        public string unidad;
+        public int orden;
         public string fecha_actualizacion;
 
         public DataTable consultaExistencias(string sucursal)
         {
             using (var ctx = cSQLite.GetInstance())
             {
-                var query = "SELECT codigo AS \"Codigo\", descripcion AS Descripción, existencia || \" \" " +
-                    "|| unidad AS \"Existencia\" FROM existencias WHERE sucursal_id = :sucursal ORDER BY descripcion DESC;";
+                var query = "SELECT codigo AS \"Codigo\", descripcion AS Descripción, " +
+                    "existencia AS \"Existencia\", orden FROM existencias " + 
+                    "WHERE sucursal_id = :sucursal ORDER BY orden ASC;";
                 ctx.Open();
                 // Adaptador de datos, DataSet y tabla
                 using (SQLiteDataAdapter db = new SQLiteDataAdapter(query, ctx))
@@ -48,8 +49,8 @@ namespace Dalmendra
         {
             using (var ctx = cSQLite.GetInstance())
             {
-                var query = "SELECT sucursal_id, codigo AS \"Codigo\", descripcion AS Descripción, existencia || \" \" " +
-                    "|| unidad AS \"Existencia\" FROM existencias ORDER BY descripcion DESC;";
+                var query = "SELECT sucursal_id, codigo AS \"Codigo\", descripcion AS Descripción, " +
+                    "existencia AS \"Existencia\", orden FROM existencias ORDER BY orden ASC;";
                 ctx.Open();
                 // Adaptador de datos, DataSet y tabla
                 using (SQLiteDataAdapter db = new SQLiteDataAdapter(query, ctx))
@@ -76,7 +77,8 @@ namespace Dalmendra
                 using (SQLiteCommand SQLcmd = new SQLiteCommand())
                 {
                     SQLcmd.Connection = ctx;   // Set default connection
-                    SQLcmd.CommandText = "SELECT * FROM existencias WHERE sucursal_id = :id AND codigo = :codigo;";
+                    SQLcmd.CommandText = "SELECT * FROM existencias " +
+                        "WHERE sucursal_id = :id AND codigo = :codigo ORDER BY orden ASC;";
                     SQLcmd.Parameters.Add(new SQLiteParameter("id", id));
                     SQLcmd.Parameters.Add(new SQLiteParameter("codigo", codigo));
                     ctx.Open();
@@ -99,15 +101,15 @@ namespace Dalmendra
                 ctx.Open();
                 // Agrega el registro de la sucursal
                 var cadena = "INSERT INTO existencias (sucursal_id, codigo, descripcion, " +
-                    "existencia, unidad, fecha_actualizacion) VALUES (:sucursal_id, :codigo," +
-                    " :descripcion, :existencia, :unidad, :fecha_actualizacion)";
+                    "existencia, orden, fecha_actualizacion) VALUES (:sucursal_id, :codigo," +
+                    " :descripcion, :existencia, :orden, :fecha_actualizacion)";
                 using (var command = new SQLiteCommand(cadena, ctx))
                 {
                     command.Parameters.Add(new SQLiteParameter("sucursal_id", this.sucursal_id));
                     command.Parameters.Add(new SQLiteParameter("codigo", this.codigo));
                     command.Parameters.Add(new SQLiteParameter("descripcion", this.descripcion));
                     command.Parameters.Add(new SQLiteParameter("existencia", this.existencia));
-                    command.Parameters.Add(new SQLiteParameter("unidad", this.unidad));
+                    command.Parameters.Add(new SQLiteParameter("orden", this.orden));
                     command.Parameters.Add(new SQLiteParameter("fecha_actualizacion", this.fecha_actualizacion));
                     command.ExecuteNonQuery();
                 }
@@ -122,14 +124,13 @@ namespace Dalmendra
             {
                 ctx.Open();
                 // Edita el registro de la sucursal
-                var query = "UPDATE existencias SET descripcion = :descripcion," +
-                    " existencia = :existencia, unidad = :unidad, fecha_actualizacion = :fecha_actualizacion " +
-                    " WHERE codigo = :codigo AND sucursal_id = :sucursal_id;";
+                var query = "UPDATE existencias SET descripcion = :descripcion, " +
+                    "existencia = :existencia, fecha_actualizacion = :fecha_actualizacion " +
+                    "WHERE codigo = :codigo AND sucursal_id = :sucursal_id;";
                 using (SQLiteCommand command = new SQLiteCommand(query, ctx))
                 {
                     command.Parameters.Add(new SQLiteParameter("descripcion", this.descripcion));
                     command.Parameters.Add(new SQLiteParameter("existencia", this.existencia));
-                    command.Parameters.Add(new SQLiteParameter("unidad", this.unidad));
                     command.Parameters.Add(new SQLiteParameter("fecha_actualizacion", this.fecha_actualizacion));
                     command.Parameters.Add(new SQLiteParameter("codigo", this.codigo));
                     command.Parameters.Add(new SQLiteParameter("sucursal_id", this.sucursal_id));
@@ -158,7 +159,27 @@ namespace Dalmendra
             }
         }
 
-        public void delete(string sucursal_id)
+        public void updateOrden(int orden, string codigo, string sucursal_id)
+        {
+            using (var ctx = cSQLite.GetInstance())
+            {
+                ctx.Open();
+                // Edita el registro de la sucursal
+                var query = "UPDATE existencias SET orden = :orden " +
+                    "WHERE codigo = :codigo AND sucursal_id = :sucursal_id;";
+                using (SQLiteCommand command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("orden", orden));
+                    command.Parameters.Add(new SQLiteParameter("codigo", codigo));
+                    command.Parameters.Add(new SQLiteParameter("sucursal_id", sucursal_id));
+                    command.ExecuteNonQuery();
+                }
+                ctx.Close();
+                ctx.Dispose();
+            }
+        }
+
+        public void deletePorSucursal(string sucursal_id)
         {
             using (var ctx = cSQLite.GetInstance())
             {
