@@ -215,6 +215,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="logo.ico" />
+    <None Include="Resources\google_wallet [#147]1.png" />
   </ItemGroup>
   <ItemGroup>
     <PublishFile Include="Dalmendra.pdb">

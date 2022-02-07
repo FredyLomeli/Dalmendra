@@ -82,6 +82,7 @@ namespace Dalmendra
             Tabla.Columns.Add(new DataColumn("id"));
             Tabla.Columns.Add(new DataColumn("nombre_sucursal"));
             Tabla.Columns.Add(new DataColumn("fecha_actualizacion"));
+            Tabla.Columns.Add(new DataColumn("color"));
             if (cModul.mSucursales != null && cModul.mSucursales.Rows.Count > 0)
             {
                 foreach (DataRow dr in cModul.mSucursales.Rows)
@@ -98,6 +99,7 @@ namespace Dalmendra
                             Renglon = Tabla.NewRow();
                             Renglon[0] = dr[0].ToString();
                             Renglon[1] = dr[1].ToString();
+                            Renglon[3] = dr[8].ToString();
                             // Asigna las variables para la consulta
                             cSucursal newSucursal = new cSucursal();
                             newSucursal.id = dr[0].ToString();
@@ -133,6 +135,7 @@ namespace Dalmendra
                             Renglon[0] = dr[0].ToString();
                             Renglon[1] = dr[1].ToString();
                             Renglon[2] = dr[7].ToString();
+                            Renglon[3] = dr[8].ToString();
                             Tabla.Rows.Add(Renglon);
                         }
                     }

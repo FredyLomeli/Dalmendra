@@ -128,18 +128,25 @@ namespace Dalmendra
                 // Si el ID es el seleccionado muestra el estatus y marca el boton
                 if (dr[0].ToString() == cModul.IdDbSelect)
                 {
+                    // Titula el formulario con el nombre de la sucursal
                     this.Text = dr[1].ToString();
+                    // Muestra la ultima actualizacion de la sucursal
                     tsslBarraEstado.Text = "Sucursal " + dr[1].ToString() +
                         " Ultima Actualización " + dr[2].ToString();
+                    // Crea el boton en la barra de estado y le da valor seleccionado
                     mostrarBtnStatusBar(i, dr, true);
+                    // Muestra la configuracion de sincronizacion
                     if(cModul.TimeSyncSucursal == "0")
                         tsslSincronizacion.Text = " | Sincronización Inactiva.";
                     else
                         tsslSincronizacion.Text = " | Sincronización cada " + cModul.TimeSyncSucursal + " min.";
+                    //Muestra la configuracion de cambio de sucursal
                     if (cModul.TimeChangeSucursal == "0")
                         tsslChambioSucursal.Text = " | Cambio de sucursal automatico Inactivo.";
                     else
                         tsslChambioSucursal.Text = " | Cambio de sucursal automatico cada " + cModul.TimeChangeSucursal + " min";
+                    //Carga el color de fondo de la sucursal.
+                    this.BackColor = cDatos.getColorFromArgb(dr[3].ToString());
                 }
                 // Agrega la sucursal a los botones
                 else mostrarBtnStatusBar(i, dr, false);

@@ -6,6 +6,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Dalmendra
 {
@@ -132,6 +133,21 @@ namespace Dalmendra
                     return dt;
                 }
             }
+        }
+
+        public static Color getColorFromArgb(string argbColor)
+        {
+            string[] mkColor = argbColor.Split('|');
+            if (mkColor.Length == 4)
+            {
+                // Create a blue color using the FromArgb static method.
+                Color myArgbColor = new Color();
+                myArgbColor = Color.FromArgb(Int32.Parse(mkColor[0]),
+                    Int32.Parse(mkColor[1]), Int32.Parse(mkColor[2]), Int32.Parse(mkColor[3]));
+                return myArgbColor;
+            }
+            else
+                return SystemColors.Control;
         }
 
     }

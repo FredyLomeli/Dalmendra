@@ -53,7 +53,11 @@ namespace Dalmendra
             if (validarCampos(txtNombreSucursal.Text.Trim(), txtServidor.Text.Trim(),
                 txtDB.Text.Trim(), txtUsuario.Text.Trim(), txtContraseña.Text.Trim()))
             {
-                if (nSQLserver.validar_conexion(txtServidor.Text.Trim(), txtDB.Text.Trim(), txtUsuario.Text.Trim(),
+                if(String.IsNullOrEmpty(txtContraseña.Text.Trim()) && status == "2")
+                {
+                    GuardarSucursal();
+                }
+                else if (nSQLserver.validar_conexion(txtServidor.Text.Trim(), txtDB.Text.Trim(), txtUsuario.Text.Trim(),
                     txtContraseña.Text.Trim()))
                 {
                     GuardarSucursal();
@@ -170,6 +174,7 @@ namespace Dalmendra
             this.tsbdelete.Enabled = false;
             this.tsbCancelar.Enabled = true;
             this.tsbTest.Enabled = true;
+            this.btnColor.Enabled = true;
         }
 
         private void inhabilitarCampos()
@@ -190,6 +195,8 @@ namespace Dalmendra
             this.tsbOrdenar.Enabled = true;
             this.tsbFinal.Enabled = false;
             this.tsbInicio.Enabled = false;
+            this.btnColor.Enabled = false;
+            this.pbxColorSuc.BackColor = cDatos.getColorFromArgb("NOCOLOR");
         }
 
         private void limpiarCampos()
@@ -231,6 +238,8 @@ namespace Dalmendra
                     txtServidor.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[2].Value.ToString();
                     txtDB.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[3].Value.ToString();
                     txtUsuario.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[4].Value.ToString();
+                    pbxColorSuc.BackColor = cDatos.getColorFromArgb(dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[6].Value.ToString());
+                    lblSetColor.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[6].Value.ToString();
                     tsbEditar.Enabled = true;
                     tsbdelete.Enabled = true;
                     tsbCancelar.Enabled = true;
@@ -277,18 +286,18 @@ namespace Dalmendra
             if (status == "1")
             {
                this.conteo = this.conteo + 1;
-                nSucursal.insert(txtNombreSucursal.Text.Trim(), txtServidor.Text.Trim(),
-                    txtDB.Text.Trim(), txtUsuario.Text.Trim(), txtContraseña.Text.Trim(), this.conteo);
+                nSucursal.insert(txtNombreSucursal.Text.Trim(), txtServidor.Text.Trim(), txtDB.Text.Trim(),
+                    txtUsuario.Text.Trim(), txtContraseña.Text.Trim(), this.conteo, lblSetColor.Text.Trim());
                 MessageBox.Show(cModul.SucursalGuardadaCorrecto, cModul.NombreDelPrograma, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (status == "2")
             {
                 if (String.IsNullOrEmpty(txtContraseña.Text.Trim()))
                     nSucursal.updateSinPassword(lblID.Text.Trim(), txtNombreSucursal.Text.Trim(), txtServidor.Text.Trim(),
-                        txtDB.Text.Trim(), txtUsuario.Text.Trim());
+                        txtDB.Text.Trim(), txtUsuario.Text.Trim(), lblSetColor.Text.Trim());
                 else
                     nSucursal.update(lblID.Text.Trim(), txtNombreSucursal.Text.Trim(), txtServidor.Text.Trim(),
-                        txtDB.Text.Trim(), txtUsuario.Text.Trim(), txtContraseña.Text.Trim());
+                        txtDB.Text.Trim(), txtUsuario.Text.Trim(), txtContraseña.Text.Trim(), lblSetColor.Text.Trim());
                 MessageBox.Show(cModul.SucursalActulizadaCorrecto, cModul.NombreDelPrograma, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             cModul.mSucursalesListado = nSucursal.consultaTodo();
@@ -464,6 +473,8 @@ namespace Dalmendra
                     txtServidor.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[2].Value.ToString();
                     txtDB.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[3].Value.ToString();
                     txtUsuario.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[4].Value.ToString();
+                    pbxColorSuc.BackColor = cDatos.getColorFromArgb(dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[6].Value.ToString());
+                    lblSetColor.Text = dgvSucursales.Rows[dgvSucursales.SelectedRows[0].Index].Cells[6].Value.ToString();
                     tsbEditar.Enabled = true;
                     tsbdelete.Enabled = true;
                     tsbCancelar.Enabled = true;
@@ -477,6 +488,20 @@ namespace Dalmendra
             catch (Exception exe)
             {
             }
+        }
+
+        private void btnColor_Click(object sender, EventArgs e)
+        {
+            if (cdgColor.ShowDialog() == DialogResult.OK)
+            {
+                //btnColor.BackColor = cdgColor.Color;
+                pbxColorSuc.BackColor = cdgColor.Color;
+                lblSetColor.Text = pbxColorSuc.BackColor.A.ToString() + "|" +
+                    pbxColorSuc.BackColor.R.ToString() + "|" +
+                    pbxColorSuc.BackColor.G.ToString() + "|" +
+                    pbxColorSuc.BackColor.B.ToString();
+                //pbxColorSuc.BackColor = cDatos.getColorFromArgb(lblColor.Text.Trim());
+            }  
         }
     }
 }

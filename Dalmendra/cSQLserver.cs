@@ -135,10 +135,21 @@ namespace Dalmendra
             SqlConnection cn = new SqlConnection();
             if (validar_conexion(Sucursal.data_source, Sucursal.catalog, Sucursal.user_id, Sucursal.password))
             {
-
-                string sql = "SELECT c.idinsumo AS Insumo, SUM(t.cantidad * c.cantidad) AS Existencias " + 
-                    "FROM tempcheqdet AS t INNER JOIN costos AS c ON t.idproducto = c.idproducto " +
-                    "GROUP BY c.idinsumo;";
+                // Consulta para rebajar lo vendido total
+                //string sql = "SELECT c.idinsumo AS Insumo, SUM(t.cantidad * c.cantidad) AS Existencias " +
+                //    "FROM tempcheqdet AS t INNER JOIN costos AS c ON t.idproducto = c.idproducto " +
+                //    "GROUP BY c.idinsumo;";
+                // Consulta para rebajar lo vendido excluyendo los tikets cancelados
+                //string sql = "SELECT c.idinsumo AS Insumo, SUM(t.cantidad * c.cantidad) AS Existencias " +
+                //    "FROM tempcheqdet AS t INNER JOIN costos AS c ON t.idproducto = c.idproducto " +
+                //    "JOIN tempcheques AS f ON t.foliodet = f.folio WHERE f.cancelado = 0 " +
+                //    "GROUP BY c.idinsumo;";
+                // CONSULTA QUE AGREGA DESCRIPCIÖN AL TOTAL DE PRODUCTOS VENDIDOS
+                string sql = "SELECT c.idinsumo AS Insumo, SUM(t.cantidad * c.cantidad) AS Existencias, " +
+                        "(SELECT i.descripcion FROM insumos AS i WHERE c.idinsumo = i.idinsumo) AS Descripcion " +
+                        "FROM tempcheqdet AS t INNER JOIN costos AS c ON t.idproducto = c.idproducto " +
+                        "JOIN tempcheques AS f ON t.foliodet = f.folio " +
+                        "WHERE f.cancelado = 0 GROUP BY c.idinsumo;";
                 //Generamos la cadena de conexion
                 connetionString = @"Data Source=" + Sucursal.data_source + ";Initial Catalog=" +
                     Sucursal.catalog + ";Integrated Security=False;User ID=" + Sucursal.user_id +
@@ -154,7 +165,16 @@ namespace Dalmendra
                 {
                     //Actualiza los datos de la tabla de datos offline
                     DataRow[] MRow = Data.Select("CODIGO = " + dr[0].ToString());
-                    MRow[0]["EXISTENCIA"] = Double.Parse(MRow[0]["EXISTENCIA"].ToString()) - Double.Parse(dr[1].ToString());
+                    if (MRow.Length > 0)
+                        MRow[0]["EXISTENCIA"] = Double.Parse(MRow[0]["EXISTENCIA"].ToString()) - Double.Parse(dr[1].ToString());
+                    else
+                    {
+                        DataRow row = Data.NewRow();
+                        row["CODIGO"] = dr[0].ToString();
+                        row["DESCRIPCION"] = dr[2].ToString();
+                        row["EXISTENCIA"] = Double.Parse(dr[1].ToString()) * -1;
+                        Data.Rows.Add(row);
+                    }
                 }
             }
             return Data;

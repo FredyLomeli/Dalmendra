@@ -96,6 +96,8 @@
             this.tsmItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.tsslBarraEstado = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslSincronizacion = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslChambioSucursal = new System.Windows.Forms.ToolStripStatusLabel();
             this.gpb15 = new System.Windows.Forms.GroupBox();
             this.dgv15 = new System.Windows.Forms.DataGridView();
             this.gpb16 = new System.Windows.Forms.GroupBox();
@@ -117,8 +119,6 @@
             this.dataGridView9 = new System.Windows.Forms.DataGridView();
             this.dgv21 = new System.Windows.Forms.DataGridView();
             this.tmrCambioSucursal = new System.Windows.Forms.Timer(this.components);
-            this.tsslSincronizacion = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tsslChambioSucursal = new System.Windows.Forms.ToolStripStatusLabel();
             this.gpb1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv1)).BeginInit();
             this.gpb2.SuspendLayout();
@@ -843,6 +843,18 @@
             this.tsslBarraEstado.Size = new System.Drawing.Size(129, 17);
             this.tsslBarraEstado.Text = "Sincronizando Sucursal";
             // 
+            // tsslSincronizacion
+            // 
+            this.tsslSincronizacion.Name = "tsslSincronizacion";
+            this.tsslSincronizacion.Size = new System.Drawing.Size(151, 17);
+            this.tsslSincronizacion.Text = "| Sincronización cada 1 min";
+            // 
+            // tsslChambioSucursal
+            // 
+            this.tsslChambioSucursal.Name = "tsslChambioSucursal";
+            this.tsslChambioSucursal.Size = new System.Drawing.Size(242, 17);
+            this.tsslChambioSucursal.Text = "| Cambio de sucursal automatico cada 1 min";
+            // 
             // gpb15
             // 
             this.gpb15.Controls.Add(this.dgv15);
@@ -1240,22 +1252,11 @@
             // 
             this.tmrCambioSucursal.Tick += new System.EventHandler(this.tmrCambioSucursal_Tick);
             // 
-            // tsslSincronizacion
-            // 
-            this.tsslSincronizacion.Name = "tsslSincronizacion";
-            this.tsslSincronizacion.Size = new System.Drawing.Size(151, 17);
-            this.tsslSincronizacion.Text = "| Sincronización cada 1 min";
-            // 
-            // tsslChambioSucursal
-            // 
-            this.tsslChambioSucursal.Name = "tsslChambioSucursal";
-            this.tsslChambioSucursal.Size = new System.Drawing.Size(242, 17);
-            this.tsslChambioSucursal.Text = "| Cambio de sucursal automatico cada 1 min";
-            // 
             // frmListadoCategorias
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(701, 294);
             this.Controls.Add(this.gpb21);
             this.Controls.Add(this.gpb20);

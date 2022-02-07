@@ -33,19 +33,8 @@
             this.lblNombreSucursal = new System.Windows.Forms.Label();
             this.txtNombreSucursal = new System.Windows.Forms.TextBox();
             this.tspSucursales = new System.Windows.Forms.ToolStrip();
-            this.tsbNuevo = new System.Windows.Forms.ToolStripButton();
-            this.tsbEditar = new System.Windows.Forms.ToolStripButton();
-            this.tsbGuardar = new System.Windows.Forms.ToolStripButton();
-            this.tsbdelete = new System.Windows.Forms.ToolStripButton();
-            this.tsbCancelar = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbTest = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbOrdenar = new System.Windows.Forms.ToolStripButton();
-            this.tsbInicio = new System.Windows.Forms.ToolStripButton();
-            this.tsbSubir = new System.Windows.Forms.ToolStripButton();
-            this.tsbBajar = new System.Windows.Forms.ToolStripButton();
-            this.tsbFinal = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCerrar = new System.Windows.Forms.ToolStripButton();
             this.gpbSucursales = new System.Windows.Forms.GroupBox();
@@ -59,9 +48,26 @@
             this.lblbd = new System.Windows.Forms.Label();
             this.txtServidor = new System.Windows.Forms.TextBox();
             this.lblServidor = new System.Windows.Forms.Label();
+            this.cdgColor = new System.Windows.Forms.ColorDialog();
+            this.lblColor = new System.Windows.Forms.Label();
+            this.lblSetColor = new System.Windows.Forms.Label();
+            this.pbxColorSuc = new System.Windows.Forms.PictureBox();
+            this.btnColor = new System.Windows.Forms.Button();
+            this.tsbNuevo = new System.Windows.Forms.ToolStripButton();
+            this.tsbEditar = new System.Windows.Forms.ToolStripButton();
+            this.tsbGuardar = new System.Windows.Forms.ToolStripButton();
+            this.tsbdelete = new System.Windows.Forms.ToolStripButton();
+            this.tsbCancelar = new System.Windows.Forms.ToolStripButton();
+            this.tsbTest = new System.Windows.Forms.ToolStripButton();
+            this.tsbOrdenar = new System.Windows.Forms.ToolStripButton();
+            this.tsbInicio = new System.Windows.Forms.ToolStripButton();
+            this.tsbSubir = new System.Windows.Forms.ToolStripButton();
+            this.tsbBajar = new System.Windows.Forms.ToolStripButton();
+            this.tsbFinal = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSucursales)).BeginInit();
             this.tspSucursales.SuspendLayout();
             this.gpbSucursales.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxColorSuc)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvSucursales
@@ -75,7 +81,7 @@
             this.dgvSucursales.Name = "dgvSucursales";
             this.dgvSucursales.ReadOnly = true;
             this.dgvSucursales.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSucursales.Size = new System.Drawing.Size(471, 242);
+            this.dgvSucursales.Size = new System.Drawing.Size(471, 261);
             this.dgvSucursales.TabIndex = 0;
             this.dgvSucursales.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSucursales_CellClick);
             this.dgvSucursales.SelectionChanged += new System.EventHandler(this.dgvSucursales_SelectionChanged);
@@ -83,7 +89,7 @@
             // lblNombreSucursal
             // 
             this.lblNombreSucursal.AutoSize = true;
-            this.lblNombreSucursal.Location = new System.Drawing.Point(9, 56);
+            this.lblNombreSucursal.Location = new System.Drawing.Point(9, 40);
             this.lblNombreSucursal.Name = "lblNombreSucursal";
             this.lblNombreSucursal.Size = new System.Drawing.Size(88, 13);
             this.lblNombreSucursal.TabIndex = 1;
@@ -92,7 +98,7 @@
             // txtNombreSucursal
             // 
             this.txtNombreSucursal.Enabled = false;
-            this.txtNombreSucursal.Location = new System.Drawing.Point(9, 72);
+            this.txtNombreSucursal.Location = new System.Drawing.Point(9, 56);
             this.txtNombreSucursal.Name = "txtNombreSucursal";
             this.txtNombreSucursal.Size = new System.Drawing.Size(139, 20);
             this.txtNombreSucursal.TabIndex = 2;
@@ -120,6 +126,180 @@
             this.tspSucursales.Size = new System.Drawing.Size(666, 25);
             this.tspSucursales.TabIndex = 3;
             this.tspSucursales.Text = "toolStrip1";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbCerrar
+            // 
+            this.tsbCerrar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbCerrar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCerrar.Name = "tsbCerrar";
+            this.tsbCerrar.Size = new System.Drawing.Size(43, 22);
+            this.tsbCerrar.Text = "Cerrar";
+            this.tsbCerrar.Click += new System.EventHandler(this.tsbCerrar_Click);
+            // 
+            // gpbSucursales
+            // 
+            this.gpbSucursales.Controls.Add(this.lblSetColor);
+            this.gpbSucursales.Controls.Add(this.pbxColorSuc);
+            this.gpbSucursales.Controls.Add(this.lblColor);
+            this.gpbSucursales.Controls.Add(this.btnColor);
+            this.gpbSucursales.Controls.Add(this.lblID);
+            this.gpbSucursales.Controls.Add(this.lblIDE);
+            this.gpbSucursales.Controls.Add(this.txtContraseña);
+            this.gpbSucursales.Controls.Add(this.lblContraseña);
+            this.gpbSucursales.Controls.Add(this.txtUsuario);
+            this.gpbSucursales.Controls.Add(this.lblUsuario);
+            this.gpbSucursales.Controls.Add(this.txtDB);
+            this.gpbSucursales.Controls.Add(this.lblbd);
+            this.gpbSucursales.Controls.Add(this.txtServidor);
+            this.gpbSucursales.Controls.Add(this.lblServidor);
+            this.gpbSucursales.Controls.Add(this.dgvSucursales);
+            this.gpbSucursales.Controls.Add(this.txtNombreSucursal);
+            this.gpbSucursales.Controls.Add(this.lblNombreSucursal);
+            this.gpbSucursales.Location = new System.Drawing.Point(12, 28);
+            this.gpbSucursales.Name = "gpbSucursales";
+            this.gpbSucursales.Size = new System.Drawing.Size(642, 294);
+            this.gpbSucursales.TabIndex = 4;
+            this.gpbSucursales.TabStop = false;
+            this.gpbSucursales.Text = "Sucursales";
+            // 
+            // lblID
+            // 
+            this.lblID.AutoSize = true;
+            this.lblID.Location = new System.Drawing.Point(36, 19);
+            this.lblID.Name = "lblID";
+            this.lblID.Size = new System.Drawing.Size(0, 13);
+            this.lblID.TabIndex = 12;
+            // 
+            // lblIDE
+            // 
+            this.lblIDE.AutoSize = true;
+            this.lblIDE.Location = new System.Drawing.Point(9, 19);
+            this.lblIDE.Name = "lblIDE";
+            this.lblIDE.Size = new System.Drawing.Size(21, 13);
+            this.lblIDE.TabIndex = 11;
+            this.lblIDE.Text = "ID:";
+            // 
+            // txtContraseña
+            // 
+            this.txtContraseña.Enabled = false;
+            this.txtContraseña.Location = new System.Drawing.Point(9, 218);
+            this.txtContraseña.Name = "txtContraseña";
+            this.txtContraseña.PasswordChar = '*';
+            this.txtContraseña.Size = new System.Drawing.Size(139, 20);
+            this.txtContraseña.TabIndex = 10;
+            // 
+            // lblContraseña
+            // 
+            this.lblContraseña.AutoSize = true;
+            this.lblContraseña.Location = new System.Drawing.Point(9, 202);
+            this.lblContraseña.Name = "lblContraseña";
+            this.lblContraseña.Size = new System.Drawing.Size(61, 13);
+            this.lblContraseña.TabIndex = 9;
+            this.lblContraseña.Text = "Contraseña";
+            // 
+            // txtUsuario
+            // 
+            this.txtUsuario.Enabled = false;
+            this.txtUsuario.Location = new System.Drawing.Point(9, 176);
+            this.txtUsuario.Name = "txtUsuario";
+            this.txtUsuario.Size = new System.Drawing.Size(139, 20);
+            this.txtUsuario.TabIndex = 8;
+            // 
+            // lblUsuario
+            // 
+            this.lblUsuario.AutoSize = true;
+            this.lblUsuario.Location = new System.Drawing.Point(9, 160);
+            this.lblUsuario.Name = "lblUsuario";
+            this.lblUsuario.Size = new System.Drawing.Size(43, 13);
+            this.lblUsuario.TabIndex = 7;
+            this.lblUsuario.Text = "Usuario";
+            // 
+            // txtDB
+            // 
+            this.txtDB.Enabled = false;
+            this.txtDB.Location = new System.Drawing.Point(9, 135);
+            this.txtDB.Name = "txtDB";
+            this.txtDB.Size = new System.Drawing.Size(139, 20);
+            this.txtDB.TabIndex = 6;
+            // 
+            // lblbd
+            // 
+            this.lblbd.AutoSize = true;
+            this.lblbd.Location = new System.Drawing.Point(9, 119);
+            this.lblbd.Name = "lblbd";
+            this.lblbd.Size = new System.Drawing.Size(75, 13);
+            this.lblbd.TabIndex = 5;
+            this.lblbd.Text = "Base de datos";
+            // 
+            // txtServidor
+            // 
+            this.txtServidor.Enabled = false;
+            this.txtServidor.Location = new System.Drawing.Point(9, 96);
+            this.txtServidor.Name = "txtServidor";
+            this.txtServidor.Size = new System.Drawing.Size(139, 20);
+            this.txtServidor.TabIndex = 4;
+            // 
+            // lblServidor
+            // 
+            this.lblServidor.AutoSize = true;
+            this.lblServidor.Location = new System.Drawing.Point(9, 80);
+            this.lblServidor.Name = "lblServidor";
+            this.lblServidor.Size = new System.Drawing.Size(46, 13);
+            this.lblServidor.TabIndex = 3;
+            this.lblServidor.Text = "Servidor";
+            // 
+            // lblColor
+            // 
+            this.lblColor.AutoSize = true;
+            this.lblColor.Location = new System.Drawing.Point(10, 242);
+            this.lblColor.Name = "lblColor";
+            this.lblColor.Size = new System.Drawing.Size(93, 13);
+            this.lblColor.TabIndex = 14;
+            this.lblColor.Text = "Color de Sucursal:";
+            // 
+            // lblSetColor
+            // 
+            this.lblSetColor.AutoSize = true;
+            this.lblSetColor.Location = new System.Drawing.Point(61, 18);
+            this.lblSetColor.Name = "lblSetColor";
+            this.lblSetColor.Size = new System.Drawing.Size(0, 13);
+            this.lblSetColor.TabIndex = 16;
+            this.lblSetColor.Visible = false;
+            // 
+            // pbxColorSuc
+            // 
+            this.pbxColorSuc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbxColorSuc.Location = new System.Drawing.Point(9, 258);
+            this.pbxColorSuc.Name = "pbxColorSuc";
+            this.pbxColorSuc.Size = new System.Drawing.Size(100, 22);
+            this.pbxColorSuc.TabIndex = 15;
+            this.pbxColorSuc.TabStop = false;
+            // 
+            // btnColor
+            // 
+            this.btnColor.Enabled = false;
+            this.btnColor.Image = global::Dalmendra.Properties.Resources.google_wallet___147_1;
+            this.btnColor.Location = new System.Drawing.Point(115, 258);
+            this.btnColor.Name = "btnColor";
+            this.btnColor.Size = new System.Drawing.Size(35, 22);
+            this.btnColor.TabIndex = 13;
+            this.btnColor.UseVisualStyleBackColor = true;
+            this.btnColor.Click += new System.EventHandler(this.btnColor_Click);
             // 
             // tsbNuevo
             // 
@@ -175,11 +355,6 @@
             this.tsbCancelar.Text = "Cancelar";
             this.tsbCancelar.Click += new System.EventHandler(this.tsbCancelar_Click);
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
             // tsbTest
             // 
             this.tsbTest.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -190,11 +365,6 @@
             this.tsbTest.Size = new System.Drawing.Size(23, 22);
             this.tsbTest.Text = "Probar Conexión";
             this.tsbTest.Click += new System.EventHandler(this.tsbTest_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbOrdenar
             // 
@@ -250,133 +420,11 @@
             this.tsbFinal.Text = "Enviar al final";
             this.tsbFinal.Click += new System.EventHandler(this.tsbFinal_Click);
             // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
-            // 
-            // tsbCerrar
-            // 
-            this.tsbCerrar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbCerrar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbCerrar.Name = "tsbCerrar";
-            this.tsbCerrar.Size = new System.Drawing.Size(43, 22);
-            this.tsbCerrar.Text = "Cerrar";
-            this.tsbCerrar.Click += new System.EventHandler(this.tsbCerrar_Click);
-            // 
-            // gpbSucursales
-            // 
-            this.gpbSucursales.Controls.Add(this.lblID);
-            this.gpbSucursales.Controls.Add(this.lblIDE);
-            this.gpbSucursales.Controls.Add(this.txtContraseña);
-            this.gpbSucursales.Controls.Add(this.lblContraseña);
-            this.gpbSucursales.Controls.Add(this.txtUsuario);
-            this.gpbSucursales.Controls.Add(this.lblUsuario);
-            this.gpbSucursales.Controls.Add(this.txtDB);
-            this.gpbSucursales.Controls.Add(this.lblbd);
-            this.gpbSucursales.Controls.Add(this.txtServidor);
-            this.gpbSucursales.Controls.Add(this.lblServidor);
-            this.gpbSucursales.Controls.Add(this.dgvSucursales);
-            this.gpbSucursales.Controls.Add(this.txtNombreSucursal);
-            this.gpbSucursales.Controls.Add(this.lblNombreSucursal);
-            this.gpbSucursales.Location = new System.Drawing.Point(12, 28);
-            this.gpbSucursales.Name = "gpbSucursales";
-            this.gpbSucursales.Size = new System.Drawing.Size(642, 275);
-            this.gpbSucursales.TabIndex = 4;
-            this.gpbSucursales.TabStop = false;
-            this.gpbSucursales.Text = "Sucursales";
-            // 
-            // lblID
-            // 
-            this.lblID.AutoSize = true;
-            this.lblID.Location = new System.Drawing.Point(35, 31);
-            this.lblID.Name = "lblID";
-            this.lblID.Size = new System.Drawing.Size(0, 13);
-            this.lblID.TabIndex = 12;
-            // 
-            // lblIDE
-            // 
-            this.lblIDE.AutoSize = true;
-            this.lblIDE.Location = new System.Drawing.Point(9, 31);
-            this.lblIDE.Name = "lblIDE";
-            this.lblIDE.Size = new System.Drawing.Size(21, 13);
-            this.lblIDE.TabIndex = 11;
-            this.lblIDE.Text = "ID:";
-            // 
-            // txtContraseña
-            // 
-            this.txtContraseña.Enabled = false;
-            this.txtContraseña.Location = new System.Drawing.Point(9, 234);
-            this.txtContraseña.Name = "txtContraseña";
-            this.txtContraseña.PasswordChar = '*';
-            this.txtContraseña.Size = new System.Drawing.Size(139, 20);
-            this.txtContraseña.TabIndex = 10;
-            // 
-            // lblContraseña
-            // 
-            this.lblContraseña.AutoSize = true;
-            this.lblContraseña.Location = new System.Drawing.Point(9, 218);
-            this.lblContraseña.Name = "lblContraseña";
-            this.lblContraseña.Size = new System.Drawing.Size(61, 13);
-            this.lblContraseña.TabIndex = 9;
-            this.lblContraseña.Text = "Contraseña";
-            // 
-            // txtUsuario
-            // 
-            this.txtUsuario.Enabled = false;
-            this.txtUsuario.Location = new System.Drawing.Point(9, 192);
-            this.txtUsuario.Name = "txtUsuario";
-            this.txtUsuario.Size = new System.Drawing.Size(139, 20);
-            this.txtUsuario.TabIndex = 8;
-            // 
-            // lblUsuario
-            // 
-            this.lblUsuario.AutoSize = true;
-            this.lblUsuario.Location = new System.Drawing.Point(9, 176);
-            this.lblUsuario.Name = "lblUsuario";
-            this.lblUsuario.Size = new System.Drawing.Size(43, 13);
-            this.lblUsuario.TabIndex = 7;
-            this.lblUsuario.Text = "Usuario";
-            // 
-            // txtDB
-            // 
-            this.txtDB.Enabled = false;
-            this.txtDB.Location = new System.Drawing.Point(9, 151);
-            this.txtDB.Name = "txtDB";
-            this.txtDB.Size = new System.Drawing.Size(139, 20);
-            this.txtDB.TabIndex = 6;
-            // 
-            // lblbd
-            // 
-            this.lblbd.AutoSize = true;
-            this.lblbd.Location = new System.Drawing.Point(9, 135);
-            this.lblbd.Name = "lblbd";
-            this.lblbd.Size = new System.Drawing.Size(75, 13);
-            this.lblbd.TabIndex = 5;
-            this.lblbd.Text = "Base de datos";
-            // 
-            // txtServidor
-            // 
-            this.txtServidor.Enabled = false;
-            this.txtServidor.Location = new System.Drawing.Point(9, 112);
-            this.txtServidor.Name = "txtServidor";
-            this.txtServidor.Size = new System.Drawing.Size(139, 20);
-            this.txtServidor.TabIndex = 4;
-            // 
-            // lblServidor
-            // 
-            this.lblServidor.AutoSize = true;
-            this.lblServidor.Location = new System.Drawing.Point(9, 96);
-            this.lblServidor.Name = "lblServidor";
-            this.lblServidor.Size = new System.Drawing.Size(46, 13);
-            this.lblServidor.TabIndex = 3;
-            this.lblServidor.Text = "Servidor";
-            // 
             // frmSucursales
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(666, 315);
+            this.ClientSize = new System.Drawing.Size(666, 331);
             this.Controls.Add(this.gpbSucursales);
             this.Controls.Add(this.tspSucursales);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -394,6 +442,7 @@
             this.tspSucursales.PerformLayout();
             this.gpbSucursales.ResumeLayout(false);
             this.gpbSucursales.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxColorSuc)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -431,5 +480,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton tsbInicio;
         private System.Windows.Forms.ToolStripButton tsbFinal;
+        private System.Windows.Forms.Button btnColor;
+        private System.Windows.Forms.ColorDialog cdgColor;
+        private System.Windows.Forms.Label lblColor;
+        private System.Windows.Forms.PictureBox pbxColorSuc;
+        private System.Windows.Forms.Label lblSetColor;
     }
 }

@@ -35,7 +35,8 @@ namespace Dalmendra
                     var query = "CREATE TABLE \"sucursales\" (\"id\" integer NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                         "\"nombre_sucursal\" text(200),\"data_source\" text(200) NOT NULL,\"catalog\" text(200) NOT NULL, " +
                         "\"user_id\" text(200) NOT NULL,\"password\" text(200) NOT NULL, " + 
-                        "\"orden\" integer NOT NULL DEFAULT 0, \"fecha_hora_actualizacion\" text(10));";
+                        "\"orden\" integer NOT NULL DEFAULT 0, \"fecha_hora_actualizacion\" text(10), " +
+                        "\"color\" text(16) DEFAULT NULL);";
                     using (var command = new SQLiteCommand(query, ctx))
                     {
                         command.ExecuteNonQuery();

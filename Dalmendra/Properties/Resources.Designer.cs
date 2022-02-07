@@ -143,6 +143,16 @@ namespace Dalmendra.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap google_wallet___147_1 {
+            get {
+                object obj = ResourceManager.GetObject("google_wallet [#147]1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap network_3___1082_ {
             get {
                 object obj = ResourceManager.GetObject("network_3 [#1082]", resourceCulture);

@@ -19,16 +19,17 @@ namespace Dalmendra
         public string password;
         public int orden;
         public string fecha_hora_actualizacion;
+        public string color;
 
         public void insert(string nombre_sucursal, string data_source, string catalog,
-            string user_id, string password, int orden)
+            string user_id, string password, int orden, string color)
         {
             using (var ctx = cSQLite.GetInstance())
             {
                 ctx.Open();
                 // Agrega el registro de la sucursal
                 var cadena = "INSERT INTO sucursales (nombre_sucursal, data_source, " +
-                    "catalog, user_id, password, orden) VALUES (?, ?, ?, ?, ?, ?)";
+                    "catalog, user_id, password, orden, color) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 using (var command = new SQLiteCommand(cadena, ctx))
                 {
                     command.Parameters.Add(new SQLiteParameter("nombre_sucursal", nombre_sucursal));
@@ -37,6 +38,7 @@ namespace Dalmendra
                     command.Parameters.Add(new SQLiteParameter("user_id", user_id));
                     command.Parameters.Add(new SQLiteParameter("password", password));
                     command.Parameters.Add(new SQLiteParameter("orden", orden));
+                    command.Parameters.Add(new SQLiteParameter("color", color));
                     command.ExecuteNonQuery();
                 }
                 ctx.Close();
@@ -45,14 +47,14 @@ namespace Dalmendra
         }
 
         public void update(string id, string nombre_sucursal, string data_source, string catalog,
-            string user_id, string password)
+            string user_id, string password, string color)
         {
             using (var ctx = cSQLite.GetInstance())
             {
                 ctx.Open();
                 // Edita el registro de la sucursal
-                var query = "UPDATE sucursales SET nombre_sucursal = :nombre_sucursal, data_source = :data_source," +
-                    " catalog = :catalog, user_id = :user_id, password = :password WHERE id = :id;";
+                var query = "UPDATE sucursales SET nombre_sucursal = :nombre_sucursal, data_source = :data_source, " +
+                    "catalog = :catalog, user_id = :user_id, password = :password, color = :color WHERE id = :id;";
                 using (SQLiteCommand command = new SQLiteCommand(query, ctx))
                 {
                     command.Parameters.Add(new SQLiteParameter("nombre_sucursal", nombre_sucursal));
@@ -60,6 +62,7 @@ namespace Dalmendra
                     command.Parameters.Add(new SQLiteParameter("catalog", catalog));
                     command.Parameters.Add(new SQLiteParameter("user_id", user_id));
                     command.Parameters.Add(new SQLiteParameter("password", password));
+                    command.Parameters.Add(new SQLiteParameter("color", color));
                     command.Parameters.Add(new SQLiteParameter("id", id));
                     command.ExecuteNonQuery();
                 }
@@ -69,20 +72,21 @@ namespace Dalmendra
         }
 
         public void updateSinPassword(string id, string nombre_sucursal, string data_source, string catalog,
-            string user_id)
+            string user_id, string color)
         {
             using (var ctx = cSQLite.GetInstance())
             {
                 ctx.Open();
                 // Edita el registro de la sucursal
-                var query = "UPDATE sucursales SET nombre_sucursal = :nombre_sucursal, data_source = :data_source," +
-                    " catalog = :catalog, user_id = :user_id WHERE id = :id;";
+                var query = "UPDATE sucursales SET nombre_sucursal = :nombre_sucursal, data_source = :data_source, " +
+                    "catalog = :catalog, user_id = :user_id, color = :color WHERE id = :id;";
                 using (SQLiteCommand command = new SQLiteCommand(query, ctx))
                 {
                     command.Parameters.Add(new SQLiteParameter("nombre_sucursal", nombre_sucursal));
                     command.Parameters.Add(new SQLiteParameter("data_source", data_source));
                     command.Parameters.Add(new SQLiteParameter("catalog", catalog));
                     command.Parameters.Add(new SQLiteParameter("user_id", user_id));
+                    command.Parameters.Add(new SQLiteParameter("color", color));
                     command.Parameters.Add(new SQLiteParameter("id", id));
                     command.ExecuteNonQuery();
                 }
@@ -134,8 +138,8 @@ namespace Dalmendra
                 // Edita el registro de la sucursal
                 var query = "SELECT id AS ID, nombre_sucursal AS \"Nombre Sucursal\", " +
                     "data_source AS Servidor, catalog AS \"Base de datos\", " +
-                    "user_id AS Usuario, orden, fecha_hora_actualizacion AS Enlace FROM sucursales "+
-                    "ORDER BY orden ASC;";
+                    "user_id AS Usuario, orden, fecha_hora_actualizacion AS Enlace, " +
+                    "color AS Color FROM sucursales ORDER BY orden ASC;";
                 // Adaptador de datos, DataSet y tabla
                 using (SQLiteDataAdapter db = new SQLiteDataAdapter(query, ctx))
                 {
