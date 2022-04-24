@@ -33,11 +33,26 @@
             this.lblNombreSucursal = new System.Windows.Forms.Label();
             this.txtNombreSucursal = new System.Windows.Forms.TextBox();
             this.tspSucursales = new System.Windows.Forms.ToolStrip();
+            this.tsbNuevo = new System.Windows.Forms.ToolStripButton();
+            this.tsbEditar = new System.Windows.Forms.ToolStripButton();
+            this.tsbGuardar = new System.Windows.Forms.ToolStripButton();
+            this.tsbdelete = new System.Windows.Forms.ToolStripButton();
+            this.tsbCancelar = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbTest = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbOrdenar = new System.Windows.Forms.ToolStripButton();
+            this.tsbInicio = new System.Windows.Forms.ToolStripButton();
+            this.tsbSubir = new System.Windows.Forms.ToolStripButton();
+            this.tsbBajar = new System.Windows.Forms.ToolStripButton();
+            this.tsbFinal = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbCerrar = new System.Windows.Forms.ToolStripButton();
             this.gpbSucursales = new System.Windows.Forms.GroupBox();
+            this.lblSetColor = new System.Windows.Forms.Label();
+            this.pbxColorSuc = new System.Windows.Forms.PictureBox();
+            this.lblColor = new System.Windows.Forms.Label();
+            this.btnColor = new System.Windows.Forms.Button();
             this.lblID = new System.Windows.Forms.Label();
             this.lblIDE = new System.Windows.Forms.Label();
             this.txtContraseña = new System.Windows.Forms.TextBox();
@@ -49,21 +64,7 @@
             this.txtServidor = new System.Windows.Forms.TextBox();
             this.lblServidor = new System.Windows.Forms.Label();
             this.cdgColor = new System.Windows.Forms.ColorDialog();
-            this.lblColor = new System.Windows.Forms.Label();
-            this.lblSetColor = new System.Windows.Forms.Label();
-            this.pbxColorSuc = new System.Windows.Forms.PictureBox();
-            this.btnColor = new System.Windows.Forms.Button();
-            this.tsbNuevo = new System.Windows.Forms.ToolStripButton();
-            this.tsbEditar = new System.Windows.Forms.ToolStripButton();
-            this.tsbGuardar = new System.Windows.Forms.ToolStripButton();
-            this.tsbdelete = new System.Windows.Forms.ToolStripButton();
-            this.tsbCancelar = new System.Windows.Forms.ToolStripButton();
-            this.tsbTest = new System.Windows.Forms.ToolStripButton();
-            this.tsbOrdenar = new System.Windows.Forms.ToolStripButton();
-            this.tsbInicio = new System.Windows.Forms.ToolStripButton();
-            this.tsbSubir = new System.Windows.Forms.ToolStripButton();
-            this.tsbBajar = new System.Windows.Forms.ToolStripButton();
-            this.tsbFinal = new System.Windows.Forms.ToolStripButton();
+            this.btnMysql = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSucursales)).BeginInit();
             this.tspSucursales.SuspendLayout();
             this.gpbSucursales.SuspendLayout();
@@ -127,15 +128,134 @@
             this.tspSucursales.TabIndex = 3;
             this.tspSucursales.Text = "toolStrip1";
             // 
+            // tsbNuevo
+            // 
+            this.tsbNuevo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbNuevo.Image = global::Dalmendra.Properties.Resources.plus_circle___1425_;
+            this.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbNuevo.Name = "tsbNuevo";
+            this.tsbNuevo.Size = new System.Drawing.Size(23, 22);
+            this.tsbNuevo.Text = "Nuevo";
+            this.tsbNuevo.Click += new System.EventHandler(this.tsbNuevo_Click);
+            // 
+            // tsbEditar
+            // 
+            this.tsbEditar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbEditar.Enabled = false;
+            this.tsbEditar.Image = global::Dalmendra.Properties.Resources.pen___1319_;
+            this.tsbEditar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbEditar.Name = "tsbEditar";
+            this.tsbEditar.Size = new System.Drawing.Size(23, 22);
+            this.tsbEditar.Text = "Editar";
+            this.tsbEditar.Click += new System.EventHandler(this.tsbEditar_Click);
+            // 
+            // tsbGuardar
+            // 
+            this.tsbGuardar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbGuardar.Enabled = false;
+            this.tsbGuardar.Image = global::Dalmendra.Properties.Resources.save_item___1410_;
+            this.tsbGuardar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbGuardar.Name = "tsbGuardar";
+            this.tsbGuardar.Size = new System.Drawing.Size(23, 22);
+            this.tsbGuardar.Text = "Guardar";
+            this.tsbGuardar.Click += new System.EventHandler(this.tsbGuardar_Click);
+            // 
+            // tsbdelete
+            // 
+            this.tsbdelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbdelete.Enabled = false;
+            this.tsbdelete.Image = global::Dalmendra.Properties.Resources.delete___1487_;
+            this.tsbdelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbdelete.Name = "tsbdelete";
+            this.tsbdelete.Size = new System.Drawing.Size(23, 22);
+            this.tsbdelete.Text = "Eliminar";
+            this.tsbdelete.Click += new System.EventHandler(this.tsbdelete_Click);
+            // 
+            // tsbCancelar
+            // 
+            this.tsbCancelar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbCancelar.Enabled = false;
+            this.tsbCancelar.Image = global::Dalmendra.Properties.Resources.close___1511_;
+            this.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCancelar.Name = "tsbCancelar";
+            this.tsbCancelar.Size = new System.Drawing.Size(23, 22);
+            this.tsbCancelar.Text = "Cancelar";
+            this.tsbCancelar.Click += new System.EventHandler(this.tsbCancelar_Click);
+            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
+            // tsbTest
+            // 
+            this.tsbTest.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbTest.Enabled = false;
+            this.tsbTest.Image = global::Dalmendra.Properties.Resources.charger___696_;
+            this.tsbTest.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbTest.Name = "tsbTest";
+            this.tsbTest.Size = new System.Drawing.Size(23, 22);
+            this.tsbTest.Text = "Probar Conexión";
+            this.tsbTest.Click += new System.EventHandler(this.tsbTest_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbOrdenar
+            // 
+            this.tsbOrdenar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbOrdenar.Image = global::Dalmendra.Properties.Resources.database_system___1800_;
+            this.tsbOrdenar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbOrdenar.Name = "tsbOrdenar";
+            this.tsbOrdenar.Size = new System.Drawing.Size(23, 22);
+            this.tsbOrdenar.Text = "Ordenar";
+            this.tsbOrdenar.Click += new System.EventHandler(this.tsbOrdenar_Click);
+            // 
+            // tsbInicio
+            // 
+            this.tsbInicio.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbInicio.Enabled = false;
+            this.tsbInicio.Image = global::Dalmendra.Properties.Resources.arrow_up_up__272_;
+            this.tsbInicio.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbInicio.Name = "tsbInicio";
+            this.tsbInicio.Size = new System.Drawing.Size(23, 22);
+            this.tsbInicio.Text = "Enviar al inicio";
+            this.tsbInicio.Click += new System.EventHandler(this.tsbInicio_Click);
+            // 
+            // tsbSubir
+            // 
+            this.tsbSubir.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSubir.Enabled = false;
+            this.tsbSubir.Image = global::Dalmendra.Properties.Resources.arrow_up___267_;
+            this.tsbSubir.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSubir.Name = "tsbSubir";
+            this.tsbSubir.Size = new System.Drawing.Size(23, 22);
+            this.tsbSubir.Text = "Subir";
+            this.tsbSubir.Click += new System.EventHandler(this.tsbSubir_Click);
+            // 
+            // tsbBajar
+            // 
+            this.tsbBajar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbBajar.Enabled = false;
+            this.tsbBajar.Image = global::Dalmendra.Properties.Resources.arrow_down___269_;
+            this.tsbBajar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbBajar.Name = "tsbBajar";
+            this.tsbBajar.Size = new System.Drawing.Size(23, 22);
+            this.tsbBajar.Text = "Bajar";
+            this.tsbBajar.Click += new System.EventHandler(this.tsbBajar_Click);
+            // 
+            // tsbFinal
+            // 
+            this.tsbFinal.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbFinal.Enabled = false;
+            this.tsbFinal.Image = global::Dalmendra.Properties.Resources.arrow_down_down__272_;
+            this.tsbFinal.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbFinal.Name = "tsbFinal";
+            this.tsbFinal.Size = new System.Drawing.Size(23, 22);
+            this.tsbFinal.Text = "Enviar al final";
+            this.tsbFinal.Click += new System.EventHandler(this.tsbFinal_Click);
             // 
             // toolStripSeparator3
             // 
@@ -172,10 +292,48 @@
             this.gpbSucursales.Controls.Add(this.lblNombreSucursal);
             this.gpbSucursales.Location = new System.Drawing.Point(12, 28);
             this.gpbSucursales.Name = "gpbSucursales";
-            this.gpbSucursales.Size = new System.Drawing.Size(642, 294);
+            this.gpbSucursales.Size = new System.Drawing.Size(642, 292);
             this.gpbSucursales.TabIndex = 4;
             this.gpbSucursales.TabStop = false;
             this.gpbSucursales.Text = "Sucursales";
+            // 
+            // lblSetColor
+            // 
+            this.lblSetColor.AutoSize = true;
+            this.lblSetColor.Location = new System.Drawing.Point(61, 18);
+            this.lblSetColor.Name = "lblSetColor";
+            this.lblSetColor.Size = new System.Drawing.Size(0, 13);
+            this.lblSetColor.TabIndex = 16;
+            this.lblSetColor.Visible = false;
+            // 
+            // pbxColorSuc
+            // 
+            this.pbxColorSuc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbxColorSuc.Location = new System.Drawing.Point(9, 258);
+            this.pbxColorSuc.Name = "pbxColorSuc";
+            this.pbxColorSuc.Size = new System.Drawing.Size(100, 22);
+            this.pbxColorSuc.TabIndex = 15;
+            this.pbxColorSuc.TabStop = false;
+            // 
+            // lblColor
+            // 
+            this.lblColor.AutoSize = true;
+            this.lblColor.Location = new System.Drawing.Point(10, 242);
+            this.lblColor.Name = "lblColor";
+            this.lblColor.Size = new System.Drawing.Size(93, 13);
+            this.lblColor.TabIndex = 14;
+            this.lblColor.Text = "Color de Sucursal:";
+            // 
+            // btnColor
+            // 
+            this.btnColor.Enabled = false;
+            this.btnColor.Image = global::Dalmendra.Properties.Resources.google_wallet___147_1;
+            this.btnColor.Location = new System.Drawing.Point(115, 258);
+            this.btnColor.Name = "btnColor";
+            this.btnColor.Size = new System.Drawing.Size(35, 22);
+            this.btnColor.TabIndex = 13;
+            this.btnColor.UseVisualStyleBackColor = true;
+            this.btnColor.Click += new System.EventHandler(this.btnColor_Click);
             // 
             // lblID
             // 
@@ -263,168 +421,22 @@
             this.lblServidor.TabIndex = 3;
             this.lblServidor.Text = "Servidor";
             // 
-            // lblColor
+            // btnMysql
             // 
-            this.lblColor.AutoSize = true;
-            this.lblColor.Location = new System.Drawing.Point(10, 242);
-            this.lblColor.Name = "lblColor";
-            this.lblColor.Size = new System.Drawing.Size(93, 13);
-            this.lblColor.TabIndex = 14;
-            this.lblColor.Text = "Color de Sucursal:";
-            // 
-            // lblSetColor
-            // 
-            this.lblSetColor.AutoSize = true;
-            this.lblSetColor.Location = new System.Drawing.Point(61, 18);
-            this.lblSetColor.Name = "lblSetColor";
-            this.lblSetColor.Size = new System.Drawing.Size(0, 13);
-            this.lblSetColor.TabIndex = 16;
-            this.lblSetColor.Visible = false;
-            // 
-            // pbxColorSuc
-            // 
-            this.pbxColorSuc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbxColorSuc.Location = new System.Drawing.Point(9, 258);
-            this.pbxColorSuc.Name = "pbxColorSuc";
-            this.pbxColorSuc.Size = new System.Drawing.Size(100, 22);
-            this.pbxColorSuc.TabIndex = 15;
-            this.pbxColorSuc.TabStop = false;
-            // 
-            // btnColor
-            // 
-            this.btnColor.Enabled = false;
-            this.btnColor.Image = global::Dalmendra.Properties.Resources.google_wallet___147_1;
-            this.btnColor.Location = new System.Drawing.Point(115, 258);
-            this.btnColor.Name = "btnColor";
-            this.btnColor.Size = new System.Drawing.Size(35, 22);
-            this.btnColor.TabIndex = 13;
-            this.btnColor.UseVisualStyleBackColor = true;
-            this.btnColor.Click += new System.EventHandler(this.btnColor_Click);
-            // 
-            // tsbNuevo
-            // 
-            this.tsbNuevo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbNuevo.Image = global::Dalmendra.Properties.Resources.plus_circle___1425_;
-            this.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbNuevo.Name = "tsbNuevo";
-            this.tsbNuevo.Size = new System.Drawing.Size(23, 22);
-            this.tsbNuevo.Text = "Nuevo";
-            this.tsbNuevo.Click += new System.EventHandler(this.tsbNuevo_Click);
-            // 
-            // tsbEditar
-            // 
-            this.tsbEditar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbEditar.Enabled = false;
-            this.tsbEditar.Image = global::Dalmendra.Properties.Resources.pen___1319_;
-            this.tsbEditar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbEditar.Name = "tsbEditar";
-            this.tsbEditar.Size = new System.Drawing.Size(23, 22);
-            this.tsbEditar.Text = "Editar";
-            this.tsbEditar.Click += new System.EventHandler(this.tsbEditar_Click);
-            // 
-            // tsbGuardar
-            // 
-            this.tsbGuardar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbGuardar.Enabled = false;
-            this.tsbGuardar.Image = global::Dalmendra.Properties.Resources.save_item___1410_;
-            this.tsbGuardar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbGuardar.Name = "tsbGuardar";
-            this.tsbGuardar.Size = new System.Drawing.Size(23, 22);
-            this.tsbGuardar.Text = "Guardar";
-            this.tsbGuardar.Click += new System.EventHandler(this.tsbGuardar_Click);
-            // 
-            // tsbdelete
-            // 
-            this.tsbdelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbdelete.Enabled = false;
-            this.tsbdelete.Image = global::Dalmendra.Properties.Resources.delete___1487_;
-            this.tsbdelete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbdelete.Name = "tsbdelete";
-            this.tsbdelete.Size = new System.Drawing.Size(23, 22);
-            this.tsbdelete.Text = "Eliminar";
-            this.tsbdelete.Click += new System.EventHandler(this.tsbdelete_Click);
-            // 
-            // tsbCancelar
-            // 
-            this.tsbCancelar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbCancelar.Enabled = false;
-            this.tsbCancelar.Image = global::Dalmendra.Properties.Resources.close___1511_;
-            this.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbCancelar.Name = "tsbCancelar";
-            this.tsbCancelar.Size = new System.Drawing.Size(23, 22);
-            this.tsbCancelar.Text = "Cancelar";
-            this.tsbCancelar.Click += new System.EventHandler(this.tsbCancelar_Click);
-            // 
-            // tsbTest
-            // 
-            this.tsbTest.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbTest.Enabled = false;
-            this.tsbTest.Image = global::Dalmendra.Properties.Resources.charger___696_;
-            this.tsbTest.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbTest.Name = "tsbTest";
-            this.tsbTest.Size = new System.Drawing.Size(23, 22);
-            this.tsbTest.Text = "Probar Conexión";
-            this.tsbTest.Click += new System.EventHandler(this.tsbTest_Click);
-            // 
-            // tsbOrdenar
-            // 
-            this.tsbOrdenar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbOrdenar.Image = global::Dalmendra.Properties.Resources.database_system___1800_;
-            this.tsbOrdenar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbOrdenar.Name = "tsbOrdenar";
-            this.tsbOrdenar.Size = new System.Drawing.Size(23, 22);
-            this.tsbOrdenar.Text = "Ordenar";
-            this.tsbOrdenar.Click += new System.EventHandler(this.tsbOrdenar_Click);
-            // 
-            // tsbInicio
-            // 
-            this.tsbInicio.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbInicio.Enabled = false;
-            this.tsbInicio.Image = global::Dalmendra.Properties.Resources.arrow_up_up__272_;
-            this.tsbInicio.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbInicio.Name = "tsbInicio";
-            this.tsbInicio.Size = new System.Drawing.Size(23, 22);
-            this.tsbInicio.Text = "Enviar al inicio";
-            this.tsbInicio.Click += new System.EventHandler(this.tsbInicio_Click);
-            // 
-            // tsbSubir
-            // 
-            this.tsbSubir.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSubir.Enabled = false;
-            this.tsbSubir.Image = global::Dalmendra.Properties.Resources.arrow_up___267_;
-            this.tsbSubir.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbSubir.Name = "tsbSubir";
-            this.tsbSubir.Size = new System.Drawing.Size(23, 22);
-            this.tsbSubir.Text = "Subir";
-            this.tsbSubir.Click += new System.EventHandler(this.tsbSubir_Click);
-            // 
-            // tsbBajar
-            // 
-            this.tsbBajar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbBajar.Enabled = false;
-            this.tsbBajar.Image = global::Dalmendra.Properties.Resources.arrow_down___269_;
-            this.tsbBajar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbBajar.Name = "tsbBajar";
-            this.tsbBajar.Size = new System.Drawing.Size(23, 22);
-            this.tsbBajar.Text = "Bajar";
-            this.tsbBajar.Click += new System.EventHandler(this.tsbBajar_Click);
-            // 
-            // tsbFinal
-            // 
-            this.tsbFinal.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbFinal.Enabled = false;
-            this.tsbFinal.Image = global::Dalmendra.Properties.Resources.arrow_down_down__272_;
-            this.tsbFinal.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbFinal.Name = "tsbFinal";
-            this.tsbFinal.Size = new System.Drawing.Size(23, 22);
-            this.tsbFinal.Text = "Enviar al final";
-            this.tsbFinal.Click += new System.EventHandler(this.tsbFinal_Click);
+            this.btnMysql.Location = new System.Drawing.Point(12, 371);
+            this.btnMysql.Name = "btnMysql";
+            this.btnMysql.Size = new System.Drawing.Size(75, 23);
+            this.btnMysql.TabIndex = 5;
+            this.btnMysql.Text = "MySQL Test";
+            this.btnMysql.UseVisualStyleBackColor = true;
+            this.btnMysql.Click += new System.EventHandler(this.btnMysql_Click);
             // 
             // frmSucursales
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(666, 331);
+            this.ClientSize = new System.Drawing.Size(666, 332);
+            this.Controls.Add(this.btnMysql);
             this.Controls.Add(this.gpbSucursales);
             this.Controls.Add(this.tspSucursales);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -485,5 +497,6 @@
         private System.Windows.Forms.Label lblColor;
         private System.Windows.Forms.PictureBox pbxColorSuc;
         private System.Windows.Forms.Label lblSetColor;
+        private System.Windows.Forms.Button btnMysql;
     }
 }

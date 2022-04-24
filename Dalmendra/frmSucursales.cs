@@ -19,6 +19,7 @@ namespace Dalmendra
         cSQLserver nSQLserver = new cSQLserver();
         cSucursal nSucursal = new cSucursal();
         cExistencias nExistencias = new cExistencias();
+        cMySQL nMySQL = new cMySQL();
         int conteo = 0;
         // 0 sin estado
         // 1 nuevo
@@ -502,6 +503,12 @@ namespace Dalmendra
                     pbxColorSuc.BackColor.B.ToString();
                 //pbxColorSuc.BackColor = cDatos.getColorFromArgb(lblColor.Text.Trim());
             }  
+        }
+
+        private void btnMysql_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(nMySQL.verificar_mysql_conexion(), cModul.NombreDelPrograma,
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
