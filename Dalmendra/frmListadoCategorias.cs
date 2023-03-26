@@ -25,23 +25,25 @@ namespace Dalmendra
         int gridLargo = 0;
         string panelName = "No Name";
 
+        // Valored funcionando a partir del 25 03 23 4 columnas
         int maxPx = 640;
-        int colDescripcionLargo = 380;
-        int colExistenciaLargo = 60;
-        int celdaExistenciaLargo = 22;
-        int panelAncho = 450;
+        int colDescripcionLargo = 267;
+        int colExistenciaLargo = 63;
+        int celdaExistenciaAlto = 22;
+        int panelAncho = 340;
         int sizeLetra = 17;
         int posicionVerticalDataGrid = 23;
         int espacioInferiorPanel = 30;
 
-        //int maxPx = 620;
-        //int colDescripcionLargo = 280;
-        //int colExistenciaLargo = 90;
-        //int celdaExistenciaLargo = 22;
-        //int panelAncho = 380;
-        //int sizeLetra = 12;
-        //int posicionVerticalDataGrid = 18;
-        //int espacioInferiorPanel = 23;
+        // Valores funcionando hasta el 25 03 2023 3 columnas
+        //int maxPx = 640;
+        //int colDescripcionLargo = 380;
+        //int colExistenciaLargo = 60;
+        //int celdaExistenciaAlto = 22;
+        //int panelAncho = 450;
+        //int sizeLetra = 17;
+        //int posicionVerticalDataGrid = 23;
+        //int espacioInferiorPanel = 30;
 
         // Valores de los botones de cada sucursal
         string btnSucursal1 = "0";
@@ -180,7 +182,7 @@ namespace Dalmendra
                     //asignamos el nombre que tomarà el panel
                     this.panelName = dr[1].ToString();
                     //Calculamos el largo de tamaño que tenga la grid = al numeor de registros
-                    this.gridLargo = 3 + (celdaExistenciaLargo * categoriaExistencias.Rows.Count);
+                    this.gridLargo = 3 + (celdaExistenciaAlto * categoriaExistencias.Rows.Count);
                     //Calculamos el largo que tendra el panel en relaciòn al tamaño de la grid
                     this.panelLargo = this.gridLargo + this.espacioInferiorPanel;
                     //Valida si aun cabe la grilla en la columna actual.

@@ -55,5 +55,8 @@ namespace Dalmendra
         public static string FirstReport = "PorCategorias";
 
         public static string ErrorProbocado = "Error al intentar mostrar el reporte, revisa la version del sistema operativo y NetFramework valido.\n Error: 314058 Descripción de la Consola de recuperación de Windows 7";
+        // Variables para controlar los errores con la sincronización
+        public static bool BanErrorSincronizacion = false;
+        public static string ErrorSincronizacion = "";
     }
 }

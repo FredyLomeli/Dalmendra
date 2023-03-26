@@ -26,10 +26,11 @@ namespace Dalmendra
         cSQLserver nSQLserver = new cSQLserver();
         cExistencias nExistencias = new cExistencias();
         cCategoria nCategoria = new cCategoria();
-
+        frmErrorSincronizacion fShowError = new frmErrorSincronizacion();
 
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
+            //fShowError.Show();
             fConfiguracion = new frmConfig(this, fListadoCategorias);
             // Verifica la base de datos en correcto estado.
             cSQLite.Up();
@@ -49,6 +50,7 @@ namespace Dalmendra
             // Si no es la primera vez valida las conexiones.
             else
             {
+                //Actualiza el inventario
                 actualizarExistencias();
                 if (cModul.SucursalesActivas.Rows.Count > 0)
                 {
@@ -73,6 +75,8 @@ namespace Dalmendra
                     fSucursales.ShowDialog();
                 }
             }
+            //muestra si hay errores en la sincronizacion
+            this.abreVentanaErrorSincronizacion();
         }
 
         private void actualizarExistencias()
@@ -110,8 +114,14 @@ namespace Dalmendra
                             newSucursal.password = dr[5].ToString();
                             newSucursal.fecha_hora_actualizacion = dr[7].ToString();
                             // Actualiza las existencias
-                            string fecha;
-                            nSQLserver.ConsultarInventario(newSucursal, out fecha);
+                            string fecha, error;
+                            //nSQLserver.ConsultarInventario(nSucursal, out fecha);
+                            // Actualización para evitar que el programa se rompa al tener problemas de conexión 
+                            if (nSQLserver.ConsultarInventario(newSucursal, out fecha, out error))
+                                // Avisa que no existe ninguna categoria para mostrar el reporte
+                                //MessageBox.Show(error, cModul.NombreDelPrograma, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                // reune los errores a mostrar
+                                cModul.ErrorSincronizacion = cModul.ErrorSincronizacion + error;
                             // Carga la fecha de actualización
                             Renglon[2] = fecha;
                             // Agrega el registro al combobox
@@ -153,7 +163,10 @@ namespace Dalmendra
         {
             if (cModul.banActualizacion)
             {
-                actualizarExistencias();
+                //Cierra la ventana de error si esta abierta
+                this.cierraVentanaErrorSincronizacion();
+                //Actualiza las existencias de las sucursales
+                this.actualizarExistencias();
                 if(cModul.EstaAbiertoFrmListado)
                     this.fListar.llenarListado();
                 if(cModul.EstaAbiertoFrmCategorias)
@@ -161,6 +174,31 @@ namespace Dalmendra
                     this.fListadoCategorias.crearVistaCategorias();
                     this.fListadoCategorias.deSeleccionarDataGrids();
                 }
+                //Abre la ventana si hay errores
+                this.abreVentanaErrorSincronizacion();
+            }
+        }
+
+        private void cierraVentanaErrorSincronizacion()
+        {
+            if (cModul.BanErrorSincronizacion)
+            {
+                cModul.BanErrorSincronizacion = false;
+                cModul.ErrorSincronizacion = "";
+                this.fShowError.Hide();
+            }
+        }
+
+        private void abreVentanaErrorSincronizacion()
+        {
+            if (cModul.BanErrorSincronizacion)
+            {
+                this.fShowError.Location = new Point(890, 520);
+                this.fShowError.lblError.Text = cModul.ErrorSincronizacion;
+                //this.fShowError.MdiParent = this;
+                //this.fListar.WindowState = FormWindowState.Maximized;
+                this.fShowError.Show();
+                this.fShowError.Focus();
             }
         }
 

@@ -12,7 +12,7 @@ namespace Dalmendra
     class cSQLite
     {
         // Nombre del archivo de base de datos
-        private const string DBName = "dalmendra.sqlite";
+        private const string DBName = "DB/dalmendra.sqlite";
         private static bool IsDbRecentlyCreated = false;
         public static SQLiteConnection DBCON;
 

@@ -58,73 +58,88 @@ namespace Dalmendra
         }
 
 
-        public void ConsultarInventario(cSucursal Sucursal, out string fecha)
+        public bool ConsultarInventario(cSucursal Sucursal, out string fecha, out string error)
         {
-            fecha = null;
+            fecha = Sucursal.fecha_hora_actualizacion;
+            error = "Conexión intermitente con la sucursal: " + Sucursal.nombre_sucursal + "\n" + "Metodo ConsultarInventarios" + "\n";
             DataTable dt = new DataTable();
             //SqlConnection cn = new SqlConnection();
-            if (validar_conexion(Sucursal.data_source, Sucursal.catalog, Sucursal.user_id, Sucursal.password))
+            try
             {
-                //definir la consulta sql server
-                //CONSULTA SOLO GRUPO ALMACEN PANES 010
-                //string sql = "SELECT i.idinsumo AS CODIGO, i.descripcion AS DESCRIPCION, " +
-                //    "i.unidad AS UNIDAD, a.existencia AS EXISTENCIA FROM insumos AS i " +
-                //    "INNER JOIN acumuladoinsumos AS a ON i.idinsumo=a.idinsumo " +
-                //    "WHERE i.idgruposi = 010 AND a.idalmacen = 3";
-                //CONSULTA A TODOS LOS ALMACENES 008 MISELANIOS y 010 PANES
-                //string sql = "SELECT i.idinsumo AS CODIGO, i.descripcion AS DESCRIPCION, " +
-                //    "i.unidad AS UNIDAD, a.existencia AS EXISTENCIA FROM insumos AS i " +
-                //    "INNER JOIN acumuladoinsumos AS a ON i.idinsumo=a.idinsumo " +
-                //    "WHERE a.idalmacen = 3";
-                //CONSULTA A TODOS LOS ALMACENES NO CONSULTA UNIDAD
-                string sql = "SELECT i.idinsumo AS CODIGO, i.descripcion AS DESCRIPCION, " +
-                    "a.existencia AS EXISTENCIA FROM insumos AS i " +
-                    "INNER JOIN acumuladoinsumos AS a ON i.idinsumo=a.idinsumo " +
-                    "WHERE a.idalmacen = 3";
-                //Generamos la cadena de conexion
-                connetionString = @"Data Source=" + Sucursal.data_source + ";Initial Catalog=" +
-                    Sucursal.catalog + ";Integrated Security=False;User ID=" + Sucursal.user_id + 
-                    ";Password=" + Sucursal.password + ";";
-                SqlConnection cn = new SqlConnection(connetionString);
-                //definimos el adaptador para almacenar la información
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(sql, cn);
-                //cargamos la tabla en memoria "data table" con la información del adaptador    
-                dataAdapter.Fill(dt);
-                cn.Close();
-                cn.Dispose();
-                dt = ConsultarVentas(Sucursal, dt);
-                //Consultamos fecha y hora
-                DateTime localDate = DateTime.Now;
-                //Definimos el total de los datos para dar orden
-                int orden = cModul.mExistencias.Select("sucursal_id = '" + Sucursal.id + "'").Length;
-                //Recorremos los valores del sistema para agregarlos a la BD local
-                foreach (DataRow dr in dt.Rows)
+                if (validar_conexion(Sucursal.data_source, Sucursal.catalog, Sucursal.user_id, Sucursal.password))
                 {
-                    cExistencias nExist = new cExistencias();
-                    // Asignamos los valores al registro de existencias
-                    nExist.sucursal_id = Sucursal.id;
-                    nExist.codigo = dr[0].ToString();
-                    nExist.descripcion = dr[1].ToString();
-                    nExist.existencia = dr[2].ToString();
-                    nExist.fecha_actualizacion = localDate.ToString();
-                    // Consultamos si ya existe un registor con ese codigo
-                    int existencias = cModul.mExistencias.Select("codigo = '" + dr[0].ToString() + "' AND sucursal_id = '" + Sucursal.id + "'").Length;
-                    // Actualiza o inserta el registro segun corresponde.
-                    if (existencias > 0)
-                        nExist.update();
-                    else
+                    //definir la consulta sql server
+                    //CONSULTA SOLO GRUPO ALMACEN PANES 010
+                    //string sql = "SELECT i.idinsumo AS CODIGO, i.descripcion AS DESCRIPCION, " +
+                    //    "i.unidad AS UNIDAD, a.existencia AS EXISTENCIA FROM insumos AS i " +
+                    //    "INNER JOIN acumuladoinsumos AS a ON i.idinsumo=a.idinsumo " +
+                    //    "WHERE i.idgruposi = 010 AND a.idalmacen = 3";
+                    //CONSULTA A TODOS LOS ALMACENES 008 MISELANIOS y 010 PANES
+                    //string sql = "SELECT i.idinsumo AS CODIGO, i.descripcion AS DESCRIPCION, " +
+                    //    "i.unidad AS UNIDAD, a.existencia AS EXISTENCIA FROM insumos AS i " +
+                    //    "INNER JOIN acumuladoinsumos AS a ON i.idinsumo=a.idinsumo " +
+                    //    "WHERE a.idalmacen = 3";
+                    //CONSULTA A TODOS LOS ALMACENES NO CONSULTA UNIDAD
+                    string sql = "SELECT i.idinsumo AS CODIGO, i.descripcion AS DESCRIPCION, " +
+                        "a.existencia AS EXISTENCIA FROM insumos AS i " +
+                        "INNER JOIN acumuladoinsumos AS a ON i.idinsumo=a.idinsumo " +
+                        "WHERE a.idalmacen = 3";
+                    //Generamos la cadena de conexion
+                    connetionString = @"Data Source=" + Sucursal.data_source + ";Initial Catalog=" +
+                        Sucursal.catalog + ";Integrated Security=False;User ID=" + Sucursal.user_id +
+                        ";Password=" + Sucursal.password + ";";
+                    SqlConnection cn = new SqlConnection(connetionString);
+                    //definimos el adaptador para almacenar la información
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(sql, cn);
+                    //cargamos la tabla en memoria "data table" con la información del adaptador    
+                    dataAdapter.Fill(dt);
+                    cn.Close();
+                    cn.Dispose();
+                    error = "Error al validar las unidades vendidas: " + Sucursal.nombre_sucursal + "\n" + "Metodo ConsultarInventarios" + "\n";
+                    dt = ConsultarVentas(Sucursal, dt);
+                    //Consultamos fecha y hora
+                    DateTime localDate = DateTime.Now;
+                    //Definimos el total de los datos para dar orden
+                    int orden = cModul.mExistencias.Select("sucursal_id = '" + Sucursal.id + "'").Length;
+                    error = "Error al sincronisar los datos con la DB local sucursal: " + Sucursal.nombre_sucursal + "\n" + "Metodo ConsultarInventarios" + "\n";
+                    //Recorremos los valores del sistema para agregarlos a la BD local
+                    foreach (DataRow dr in dt.Rows)
                     {
-                        orden = orden + 1;
-                        nExist.orden = orden;
-                        nExist.insert();
+                        cExistencias nExist = new cExistencias();
+                        // Asignamos los valores al registro de existencias
+                        nExist.sucursal_id = Sucursal.id;
+                        nExist.codigo = dr[0].ToString();
+                        nExist.descripcion = dr[1].ToString();
+                        nExist.existencia = dr[2].ToString();
+                        nExist.fecha_actualizacion = localDate.ToString();
+                        // Consultamos si ya existe un registor con ese codigo
+                        int existencias = cModul.mExistencias.Select("codigo = '" + dr[0].ToString() + "' AND sucursal_id = '" + Sucursal.id + "'").Length;
+                        // Actualiza o inserta el registro segun corresponde.
+                        if (existencias > 0)
+                            nExist.update();
+                        else
+                        {
+                            orden = orden + 1;
+                            nExist.orden = orden;
+                            nExist.insert();
+                        }
                     }
+                    error = "Error al terminar la sincronización con la DB local sucursal: " + Sucursal.nombre_sucursal + "\n" + "Metodo ConsultarInventarios" + "\n";
+                    // Elimina los registros que ya no existen
+                    nExistencias.delete(Sucursal.id, localDate.ToString());
+                    // Actualiza fecha actualización Servidor
+                    nSucursal.updateActualizacion(Sucursal.id, localDate.ToString());
+                    // retornamos la fecha de registro
+                    fecha = localDate.ToString();
+                    //Eliminamos los errores
+                    error = "";
                 }
-                // Elimina los registros que ya no existen
-                nExistencias.delete(Sucursal.id, localDate.ToString());
-                // Actualiza fecha actualización Servidor
-                nSucursal.updateActualizacion(Sucursal.id,localDate.ToString());
-                // retornamos la fecha de registro
-                fecha = localDate.ToString();
+                return false;
+            }
+            catch (SqlException e)
+            {
+                cModul.BanErrorSincronizacion = true;
+                return true;
             }
         }
 
@@ -163,10 +178,15 @@ namespace Dalmendra
                 //Recorremos los valores del sistema para agregarlos a la BD local
                 foreach (DataRow dr in dt.Rows)
                 {
+                    string consulta = "CODIGO='" + dr[0].ToString() + "'";
+                    // Valida si existe el registro en la tabla
+                    int existencias = Data.Select(consulta).Length;
                     //Actualiza los datos de la tabla de datos offline
-                    DataRow[] MRow = Data.Select("CODIGO = " + dr[0].ToString());
-                    if (MRow.Length > 0)
+                    if (existencias > 0)
+                    {
+                        DataRow[] MRow = Data.Select(consulta);
                         MRow[0]["EXISTENCIA"] = Double.Parse(MRow[0]["EXISTENCIA"].ToString()) - Double.Parse(dr[1].ToString());
+                    }
                     else
                     {
                         DataRow row = Data.NewRow();

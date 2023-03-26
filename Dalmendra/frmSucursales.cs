@@ -62,8 +62,15 @@ namespace Dalmendra
                     txtContraseña.Text.Trim()))
                 {
                     GuardarSucursal();
-                    string fecha;
-                    nSQLserver.ConsultarInventario(nSucursal, out fecha);
+                    string fecha, error;
+                    //nSQLserver.ConsultarInventario(nSucursal, out fecha);
+                    // Actualización para evitar que el programa se rompa al tener problemas de conexión 
+                    if (nSQLserver.ConsultarInventario(nSucursal, out fecha, out error))
+                        // Avisa que no existe ninguna categoria para mostrar el reporte
+                        //MessageBox.Show(error, cModul.NombreDelPrograma, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        // reune los errores a mostrar
+                        cModul.ErrorSincronizacion = cModul.ErrorSincronizacion + error;
+
                     for (int i = 0; i < cModul.mSucursalesListado.Rows.Count; i++)
                     {
                         if (cModul.mSucursalesListado.Rows[i]["ID"].ToString() == nSucursal.id)

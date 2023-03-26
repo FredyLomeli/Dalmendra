@@ -435,7 +435,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(666, 332);
+            this.ClientSize = new System.Drawing.Size(666, 327);
             this.Controls.Add(this.btnMysql);
             this.Controls.Add(this.gpbSucursales);
             this.Controls.Add(this.tspSucursales);
