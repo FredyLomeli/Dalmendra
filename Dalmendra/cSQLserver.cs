@@ -63,22 +63,10 @@ namespace Dalmendra
             fecha = Sucursal.fecha_hora_actualizacion;
             error = "Conexión intermitente con la sucursal: " + Sucursal.nombre_sucursal + "\n" + "Metodo ConsultarInventarios" + "\n";
             DataTable dt = new DataTable();
-            //SqlConnection cn = new SqlConnection();
             try
             {
                 if (validar_conexion(Sucursal.data_source, Sucursal.catalog, Sucursal.user_id, Sucursal.password))
                 {
-                    //definir la consulta sql server
-                    //CONSULTA SOLO GRUPO ALMACEN PANES 010
-                    //string sql = "SELECT i.idinsumo AS CODIGO, i.descripcion AS DESCRIPCION, " +
-                    //    "i.unidad AS UNIDAD, a.existencia AS EXISTENCIA FROM insumos AS i " +
-                    //    "INNER JOIN acumuladoinsumos AS a ON i.idinsumo=a.idinsumo " +
-                    //    "WHERE i.idgruposi = 010 AND a.idalmacen = 3";
-                    //CONSULTA A TODOS LOS ALMACENES 008 MISELANIOS y 010 PANES
-                    //string sql = "SELECT i.idinsumo AS CODIGO, i.descripcion AS DESCRIPCION, " +
-                    //    "i.unidad AS UNIDAD, a.existencia AS EXISTENCIA FROM insumos AS i " +
-                    //    "INNER JOIN acumuladoinsumos AS a ON i.idinsumo=a.idinsumo " +
-                    //    "WHERE a.idalmacen = 3";
                     //CONSULTA A TODOS LOS ALMACENES NO CONSULTA UNIDAD
                     string sql = "SELECT i.idinsumo AS CODIGO, i.descripcion AS DESCRIPCION, " +
                         "a.existencia AS EXISTENCIA FROM insumos AS i " +
@@ -100,7 +88,7 @@ namespace Dalmendra
                     //Consultamos fecha y hora
                     DateTime localDate = DateTime.Now;
                     //Definimos el total de los datos para dar orden
-                    int orden = cModul.mExistencias.Select("sucursal_id = '" + Sucursal.id + "'").Length;
+                    //int orden = cModul.mExistencias.Select("sucursal_id = '" + Sucursal.id + "'").Length;
                     error = "Error al sincronisar los datos con la DB local sucursal: " + Sucursal.nombre_sucursal + "\n" + "Metodo ConsultarInventarios" + "\n";
                     //Recorremos los valores del sistema para agregarlos a la BD local
                     foreach (DataRow dr in dt.Rows)
@@ -112,17 +100,8 @@ namespace Dalmendra
                         nExist.descripcion = dr[1].ToString();
                         nExist.existencia = dr[2].ToString();
                         nExist.fecha_actualizacion = localDate.ToString();
-                        // Consultamos si ya existe un registor con ese codigo
-                        int existencias = cModul.mExistencias.Select("codigo = '" + dr[0].ToString() + "' AND sucursal_id = '" + Sucursal.id + "'").Length;
-                        // Actualiza o inserta el registro segun corresponde.
-                        if (existencias > 0)
-                            nExist.update();
-                        else
-                        {
-                            orden = orden + 1;
-                            nExist.orden = orden;
-                            nExist.insert();
-                        }
+                        // Guardamos la información del registro
+                        nExist.save();
                     }
                     error = "Error al terminar la sincronización con la DB local sucursal: " + Sucursal.nombre_sucursal + "\n" + "Metodo ConsultarInventarios" + "\n";
                     // Elimina los registros que ya no existen

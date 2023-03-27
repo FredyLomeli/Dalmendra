@@ -27,6 +27,7 @@ namespace Dalmendra
         cExistencias nExistencias = new cExistencias();
         cCategoria nCategoria = new cCategoria();
         frmErrorSincronizacion fShowError = new frmErrorSincronizacion();
+        cOrden nOrden = new cOrden();
 
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
@@ -40,6 +41,8 @@ namespace Dalmendra
             cModul.mExistencias = nExistencias.consulta();
             // Consulta los datos de configuracion
             cDatos.ConsultaDatos();
+            // Consulta los ordenes registradas
+            cModul.mOrden = nOrden.consulta();
             // Definimos si se activa el times de sincronizacion
             defineTimerSync();
             // Si es la primera vez abre la configuración de la Base de datos.
@@ -91,35 +94,26 @@ namespace Dalmendra
             {
                 foreach (DataRow dr in cModul.mSucursales.Rows)
                 {
+                    // Asigna las variables para la consulta
+                    cSucursal newSucursal = new cSucursal(dr);
                     // Generamos el objeto a agregar combo
                     DataRow Renglon;
-                    // Si no es la conexión de prueba
-                    if (dr[5].ToString() != "***" && dr[5].ToString() != null)
+                    // Valida si no es la conexión de prueba
+                    if (newSucursal.password != "***" && newSucursal.password != null)
                     {
                         // Valida la conexion con la base de datos
-                        if (nSQLserver.validar_conexion(dr[2].ToString(), dr[3].ToString(), dr[4].ToString(), dr[5].ToString()))
+                        if (nSQLserver.validar_conexion(newSucursal.data_source, newSucursal.catalog,
+                                newSucursal.user_id, newSucursal.password))
                         {
                             // Generamos el combo de
                             Renglon = Tabla.NewRow();
-                            Renglon[0] = dr[0].ToString();
-                            Renglon[1] = dr[1].ToString();
-                            Renglon[3] = dr[8].ToString();
-                            // Asigna las variables para la consulta
-                            cSucursal newSucursal = new cSucursal();
-                            newSucursal.id = dr[0].ToString();
-                            newSucursal.nombre_sucursal = dr[1].ToString();
-                            newSucursal.data_source = dr[2].ToString();
-                            newSucursal.catalog = dr[3].ToString();
-                            newSucursal.user_id = dr[4].ToString();
-                            newSucursal.password = dr[5].ToString();
-                            newSucursal.fecha_hora_actualizacion = dr[7].ToString();
+                            Renglon[0] = newSucursal.id;
+                            Renglon[1] = newSucursal.nombre_sucursal;
+                            Renglon[3] = newSucursal.color;
                             // Actualiza las existencias
                             string fecha, error;
-                            //nSQLserver.ConsultarInventario(nSucursal, out fecha);
                             // Actualización para evitar que el programa se rompa al tener problemas de conexión 
                             if (nSQLserver.ConsultarInventario(newSucursal, out fecha, out error))
-                                // Avisa que no existe ninguna categoria para mostrar el reporte
-                                //MessageBox.Show(error, cModul.NombreDelPrograma, MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 // reune los errores a mostrar
                                 cModul.ErrorSincronizacion = cModul.ErrorSincronizacion + error;
                             // Carga la fecha de actualización
@@ -136,6 +130,8 @@ namespace Dalmendra
                             cModul.mSucursales = nSucursal.consulta();
                             // Consulta las Existencias registradas
                             cModul.mExistencias = nExistencias.consulta();
+                            // Consulta los ordenes registradas
+                            cModul.mOrden = nOrden.consulta();
                         }
                         //Si no hay conexion pero tiene fecha de actualizacion se muestra como sucursal activa
                         else if (!string.IsNullOrEmpty(dr[7].ToString().Trim()))

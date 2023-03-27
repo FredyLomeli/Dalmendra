@@ -21,6 +21,25 @@ namespace Dalmendra
         public string fecha_hora_actualizacion;
         public string color;
 
+        public cSucursal()
+        {
+            //Constructor vacio
+        }
+
+        // Constructor desde valores existentes
+        public cSucursal(DataRow dr)
+        {
+            this.id = dr[0].ToString();
+            this.nombre_sucursal = dr[1].ToString();
+            this.data_source = dr[2].ToString();
+            this.catalog = dr[3].ToString();
+            this.user_id = dr[4].ToString();
+            this.password = dr[5].ToString();
+            //this.orden = dr[6].ToString();
+            this.fecha_hora_actualizacion = dr[7].ToString();
+            this.color = dr[8].ToString();
+        }
+
         public void insert(string nombre_sucursal, string data_source, string catalog,
             string user_id, string password, int orden, string color)
         {

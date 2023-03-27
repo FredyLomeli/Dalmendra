@@ -43,6 +43,7 @@ namespace Dalmendra
         public static DataTable SucursalesActivas = new DataTable();
         public static bool banActualizacion = true;
         public static DataTable CatalogoTemporal = new DataTable();
+        public static DataTable mOrden = new DataTable();
 
         // ID de la sucursal a mostrar en el reporte seleccionado
         public static string IdDbSelect = "1";

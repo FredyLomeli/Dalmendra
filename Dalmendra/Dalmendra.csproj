@@ -73,6 +73,7 @@
     <Compile Include="cExistencias.cs" />
     <Compile Include="cModul.cs" />
     <Compile Include="cMySQL.cs" />
+    <Compile Include="cOrden.cs" />
     <Compile Include="frmErrorSincronizacion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,6 +138,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmCategorias.resx">
       <DependentUpon>frmCategorias.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmListar.resx">
       <DependentUpon>frmListar.cs</DependentUpon>

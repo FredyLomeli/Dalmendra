@@ -50,7 +50,7 @@ namespace Dalmendra
             using (var ctx = cSQLite.GetInstance())
             {
                 var query = "SELECT sucursal_id, codigo AS \"Codigo\", descripcion AS Descripción, " +
-                    "existencia AS \"Existencia\", orden FROM existencias ORDER BY orden ASC;";
+                    "existencia AS \"Existencia\", orden, id FROM existencias ORDER BY orden ASC;";
                 ctx.Open();
                 // Adaptador de datos, DataSet y tabla
                 using (SQLiteDataAdapter db = new SQLiteDataAdapter(query, ctx))
@@ -125,15 +125,16 @@ namespace Dalmendra
                 ctx.Open();
                 // Edita el registro de la sucursal
                 var query = "UPDATE existencias SET descripcion = :descripcion, " +
-                    "existencia = :existencia, fecha_actualizacion = :fecha_actualizacion " +
-                    "WHERE codigo = :codigo AND sucursal_id = :sucursal_id;";
+                    "existencia = :existencia, fecha_actualizacion = :fecha_actualizacion, " +
+                    "orden = :orden WHERE id = :id;";
                 using (SQLiteCommand command = new SQLiteCommand(query, ctx))
                 {
                     command.Parameters.Add(new SQLiteParameter("descripcion", this.descripcion));
                     command.Parameters.Add(new SQLiteParameter("existencia", this.existencia));
+                    command.Parameters.Add(new SQLiteParameter("orden", this.orden));
                     command.Parameters.Add(new SQLiteParameter("fecha_actualizacion", this.fecha_actualizacion));
                     command.Parameters.Add(new SQLiteParameter("codigo", this.codigo));
-                    command.Parameters.Add(new SQLiteParameter("sucursal_id", this.sucursal_id));
+                    command.Parameters.Add(new SQLiteParameter("id", this.id));
                     command.ExecuteNonQuery();
                 }
                 ctx.Close();
@@ -194,6 +195,26 @@ namespace Dalmendra
                 ctx.Close();
                 ctx.Dispose();
             }
+        }
+
+        public void save()
+        {
+            cOrden nOrden = new cOrden(this);
+            // Si existe le asignamos un orden, si no, le creamos uno nuevo
+            this.orden = nOrden.getOrden();
+
+            //Validamos si el articulo ya existe en la base de datos para deifinir si actualizamos o insertamos
+            DataRow[] existenciasTemp = cModul.mExistencias.Select("codigo = '" + this.codigo + "' AND sucursal_id = '" + this.sucursal_id + "'");
+            //Si ya se tiene el registro
+            if (existenciasTemp.Length > 0)
+            {
+                // Tomamos el ID
+                this.id = existenciasTemp[0]["id"].ToString();
+                //Actualizamos
+                this.update();
+            }
+            //Si no se tiene le registro se crea uno nuevo
+            else this.insert();
         }
     }
 }

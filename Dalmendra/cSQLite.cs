@@ -72,6 +72,13 @@ namespace Dalmendra
                     {
                         command.ExecuteNonQuery();
                     }
+                    // Si es la primera vez genera la tabla de consulta.
+                    var query6 = "CREATE TABLE \"orden\" (\"id\" integer NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                        "\"sucursal_id\" integer, \"codigo\" text(10), \"orden\" integer NOT NULL DEFAULT 0);";
+                    using (var command = new SQLiteCommand(query6, ctx))
+                    {
+                        command.ExecuteNonQuery();
+                    }
                     // Agrega el registro de sucursal 1
                     var cadena = "INSERT INTO sucursales (nombre_sucursal, data_source, catalog, " +
                         "user_id, password, orden) VALUES (?, ?, ?, ?, ?, 1)";
