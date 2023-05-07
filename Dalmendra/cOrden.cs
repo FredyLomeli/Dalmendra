@@ -70,6 +70,25 @@ namespace Dalmendra
             }
         }
 
+        public void update(int orden, string codigo, string sucursal_id)
+        {
+            using (var ctx = cSQLite.GetInstance())
+            {
+                ctx.Open();
+                // Edita el registro de la sucursal
+                var query = "UPDATE orden SET orden = :orden WHERE codigo = :codigo AND sucursal_id = :sucursal_id;";
+                using (SQLiteCommand command = new SQLiteCommand(query, ctx))
+                {
+                    command.Parameters.Add(new SQLiteParameter("orden", orden));
+                    command.Parameters.Add(new SQLiteParameter("codigo", codigo));
+                    command.Parameters.Add(new SQLiteParameter("sucursal_id", sucursal_id));
+                    command.ExecuteNonQuery();
+                }
+                ctx.Close();
+                ctx.Dispose();
+            }
+        }
+
         public void addRegToDataTable()
         {
             DataRow Renglon;

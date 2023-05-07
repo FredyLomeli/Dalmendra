@@ -1,7 +1,6 @@
 C:\Users\Fredy\OneDrive - UNIVERSIDAD INTERAMERICANA PARA EL DESARROLLO\Documents\Visual Studio 2012\Dalmendra\Dalmendra\bin\Debug\Dalmendra.exe.config
 C:\Users\Fredy\OneDrive - UNIVERSIDAD INTERAMERICANA PARA EL DESARROLLO\Documents\Visual Studio 2012\Dalmendra\Dalmendra\bin\Debug\Dalmendra.exe
 C:\Users\Fredy\OneDrive - UNIVERSIDAD INTERAMERICANA PARA EL DESARROLLO\Documents\Visual Studio 2012\Dalmendra\Dalmendra\bin\Debug\Dalmendra.pdb
-C:\Users\Fredy\OneDrive - UNIVERSIDAD INTERAMERICANA PARA EL DESARROLLO\Documents\Visual Studio 2012\Dalmendra\Dalmendra\bin\Debug\System.Data.SQLite.dll
 C:\Users\Fredy\OneDrive - UNIVERSIDAD INTERAMERICANA PARA EL DESARROLLO\Documents\Visual Studio 2012\Dalmendra\Dalmendra\bin\Debug\System.Data.SQLite.pdb
 C:\Users\Fredy\OneDrive - UNIVERSIDAD INTERAMERICANA PARA EL DESARROLLO\Documents\Visual Studio 2012\Dalmendra\Dalmendra\bin\Debug\System.Data.SQLite.xml
 C:\Users\Fredy\OneDrive - UNIVERSIDAD INTERAMERICANA PARA EL DESARROLLO\Documents\Visual Studio 2012\Dalmendra\Dalmendra\obj\Debug\Dalmendra.frmErrorSincronizacion.resources

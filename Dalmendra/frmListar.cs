@@ -58,17 +58,45 @@ namespace Dalmendra
                         pbxSemaforo.BackColor = Color.Red;
                 }
             }
-            // Genera el filtrado de los datos que requiere mostrar y hace una copia
-            DataTable sucursalExistencias = cModul.mExistencias.Select("sucursal_id = '" + selecteVal + "'").CopyToDataTable();
 
-            // Elimina la información que no se requiere
-            sucursalExistencias.Columns.Remove("sucursal_id");
+            // consulta el numero de registros que concuerden con la regla
+            int numberOfRecords = cModul.mExistencias.Select("sucursal_id = '" + selecteVal + "'").Length;
 
-            // carga y muestra la información en el dataGrid
-            dgvListar.DataSource = crearPlantillaColumnas(sucursalExistencias);
-            dgvListar.AutoResizeColumns();
-            dgvListar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvListar.RowHeadersVisible = false;
+            // Valida cuantas existencias hay con esa palabra cable
+            if (numberOfRecords > 0)
+            {
+                // Genera el filtrado de los datos que requiere mostrar y hace una copia
+                DataTable sucursalExistencias = cModul.mExistencias.Select("sucursal_id = '" + selecteVal + "'").CopyToDataTable();
+
+                // Elimina la información que no se requiere
+                sucursalExistencias.Columns.Remove("sucursal_id");
+
+                // carga y muestra la información en el dataGrid
+                dgvListar.DataSource = crearPlantillaColumnas(sucursalExistencias);
+                dgvListar.AutoResizeColumns();
+                dgvListar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                dgvListar.RowHeadersVisible = false;
+            }
+            else
+            {
+                // tomatos toda la tabla para tener la plantilla de columnas
+                DataTable sucursalExistencias = cModul.mExistencias.Clone();
+                // borramos todos los datos solo para que nos queden las columnas
+                sucursalExistencias.Rows.Clear();
+                //generamos un renglon en blanco para que se muestre vacio
+                DataRow Renglon;
+                Renglon = sucursalExistencias.NewRow();
+                sucursalExistencias.Rows.Add(Renglon);
+
+                // Elimina la información que no se requiere
+                sucursalExistencias.Columns.Remove("sucursal_id");
+
+                // carga y muestra la información en el dataGrid
+                dgvListar.DataSource = crearPlantillaColumnas(sucursalExistencias);
+                dgvListar.AutoResizeColumns();
+                dgvListar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                dgvListar.RowHeadersVisible = false;
+            }
         }
 
         private DataTable crearPlantillaColumnas(DataTable sucursalExistencias)

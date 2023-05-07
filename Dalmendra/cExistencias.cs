@@ -160,19 +160,17 @@ namespace Dalmendra
             }
         }
 
-        public void updateOrden(int orden, string codigo, string sucursal_id)
+        public void updateOrden(int orden, string id)
         {
             using (var ctx = cSQLite.GetInstance())
             {
                 ctx.Open();
                 // Edita el registro de la sucursal
-                var query = "UPDATE existencias SET orden = :orden " +
-                    "WHERE codigo = :codigo AND sucursal_id = :sucursal_id;";
+                var query = "UPDATE existencias SET orden = :orden WHERE id = :id;";
                 using (SQLiteCommand command = new SQLiteCommand(query, ctx))
                 {
                     command.Parameters.Add(new SQLiteParameter("orden", orden));
-                    command.Parameters.Add(new SQLiteParameter("codigo", codigo));
-                    command.Parameters.Add(new SQLiteParameter("sucursal_id", sucursal_id));
+                    command.Parameters.Add(new SQLiteParameter("id", id));
                     command.ExecuteNonQuery();
                 }
                 ctx.Close();
